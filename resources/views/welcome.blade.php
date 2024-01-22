@@ -852,8 +852,12 @@
             </div>
         @endif
 
-
+        <div>
+            <h1 class="text-center font-extrabold text-purple-500 text-5xl">DELICE EXPENSE TRACKER</h1>
+        </div>
     </div>
+
+
 
     @vite('resources/js/app.js')
 </body>

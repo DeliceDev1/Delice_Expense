@@ -1,30 +1,49 @@
 <script setup>
     import { ref, reactive } from 'vue';
 
+    // object to handle the static part of form
+    const clientDetails = reactive({ category: '', date: null, amount: 0, tax: 0, cpn: '', cpm: null, received: '', currency: 'tk' });
+
+
+    // array of object to handle the dynamic form data 
     const clientsFile = reactive([
     { name: '',  passport: null , nationality:'', appliedCountry:''},
     ]);
-
+    
+    // variable to control checkbox
     const showClient=ref(false);
 
+    
+    // function to create new dynamic field after clicking +
     const addClient = () => {
     clientsFile.push({ name: '', passport: null , nationality:'', appliedCountry:''});
     };
 
+
+    // function to remove dynamic form
     const removeClient = (index)=>{
         clientsFile.splice(index, 1);
     }
+
+    // function to handle form data
+    const submitData = async() => {
+        const data= await axios.post('/api/store-client-data',{
+            clientsFile: clientsFile,
+            clientDetails: clientDetails
+        })
+    }
+
 </script>
 
 <template>
-    <div class="bg-white-200 shadow-lg rounded p-6 ">
+    <div class="bg-white-200 shadow-lg p-6 mx-4 rounded-xl">
         <form action="" class="my-2">
-            <p class="bg-purple-700 text-white text-center text-2xl mb-2">Cash-in Details</p>
+            <p class="bg-purple-700 text-white text-center text-2xl mb-2 p-2 rounded-lg">CASH-IN DETAILS</p>
             <div class="grid grid-cols-2 gap-2">
                 <div>
                     <label for="" class="font-normal">Category</label>
-                    <select name="cars" id="cars"
-                        class="w-full border border-gray-300 rounded">
+                    <select name="cars" id="cars" v-model="clientDetails.category"
+                        class="w-full border border-gray-300 rounded-xl">
                         <option value="category-1">category-1</option>
                         <option value="category-2">category-2</option>
                         <option value="category-3">category-3</option>
@@ -35,40 +54,57 @@
                 </div>
                 <div>
                     <label for="">Date & Time</label>
-                    <input type="date" name="" id=""
-                        class="w-full border border-gray-300 rounded">
+                    <input type="date" name="date" id="" v-model="clientDetails.date"
+                        class="w-full border border-gray-300 rounded-xl">
                 </div>
                 <div>
                     <label for="">Amount</label>
-                    <input type="number" name="" id="" placeholder="Enter Amount"
-                        class="w-full border border-gray-300 rounded">
+                    <input type="number" name="amount" id="" placeholder="Enter Amount" v-model="clientDetails.amount"
+                        class="w-full border border-gray-300 rounded-xl">
                 </div>
                 <div>
                     <label for="">Tax</label>
-                    <input type="number" name="" id=""
+                    <input type="number" name="tax" id="" v-model="clientDetails.tax"
                         placeholder="Total Tax Amount"
-                        class="w-full border border-gray-300 rounded">
+                        class="w-full border border-gray-300 rounded-xl">
                 </div>
                 <div>
                     <label for="">Contactable Person Name</label>
-                    <input type="text" name="" id="" placeholder="Person Name"
-                        class="w-full border border-gray-300 rounded">
+                    <input type="text" name="person_name" id="" placeholder="Person Name" v-model="clientDetails.cpn"
+                        class="w-full border border-gray-300 rounded-xl">
                 </div>
                 <div>
                     <label for="">Contactable Person Mobile</label>
-                    <input type="number" name="" id="" placeholder=""
-                        class="w-full border border-gray-300 rounded">
+                    <input type="number" name="person_mobile" id="" placeholder="" v-model="clientDetails.cpm"
+                        class="w-full border border-gray-300 rounded-xl">
                 </div>
                 <div>
-                    <label for="">Received Mode</label>
-                    <input type="text" name="" id=""
-                        placeholder="What is Your Received Mode"
-                        class="w-full border border-gray-300 rounded">
+                    <label for="" class="font-normal">Received Mode</label>
+                    <select name="" id="" v-model="clientDetails.received"
+                        class="w-full border border-gray-300 rounded-xl">
+                        <option value="cash">Cash</option>
+                        <option value="bank-transfer">Bank Transfer</option>
+                        <option value="check-book">Check Book</option>
+                        <option value="others">Others</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="">Currency</label>
+                    <input type="text" name="" id="" placeholder="Tk" class="w-full border border-gray-300 rounded-xl">
+                </div>
+
+                <div>
+                    <label for="">Agent</label>
+                    <input type="text" name="" id="" placeholder="Enter the agent name" class="w-full border border-gray-300 rounded-xl">
+                </div>
+                <div>
+                    <label for="">Images</label>
+                    <input type="file" name="" id="" class="w-full border border-gray-300 rounded-lg p-1 bg-white">
                 </div>
             </div>
         </form>
         <div>
-                <input type="checkbox" name="" id="" v-model="showClient" 
+                <input type="checkbox" name="" id="" v-model="showClient"
                     class="w-4 h-4 my-3 mx-2 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                 <label for="">File </label>
         </div>
@@ -78,8 +114,8 @@
         <div v-if="showClient">
             <div v-for="(client, index) in clientsFile" :key="index">
                 <div class="flex justify-between">
-                    <div>Form {{ index+1 }}</div>
-                    <button @click="removeClient(index)">X</button>
+                    <div class="text-normal font-bold">Form {{ index+1 }}</div>
+                    <button class="text-red-500" @click="removeClient(index)">X</button>
                 </div>
                 <div>
                     <div class="grid grid-cols-2 gap-2">
@@ -88,28 +124,28 @@
                             <input type="text" name="" id=""
                                 v-model="client.name"
                                 placeholder="File Holder Name"
-                                class="w-full border border-gray-300 rounded">
+                                class="w-full border border-gray-300 rounded-lg">
                         </div>
                         <div>
                             <label for="">Passport No</label>
                             <input type="number" name="" id="" 
                                     placeholder="Passport No"
                                     v-model="client.passport"
-                                    class="w-full border border-gray-300 rounded">
+                                    class="w-full border border-gray-300 rounded-lg">
                         </div>
                         <div>
                             <label for="">Nationality</label>
                             <input type="text" name="" id=""
                                     placeholder="Your Nationality"
                                     v-model="client.nationality"
-                                class="w-full border border-gray-300 rounded">
+                                    class="w-full border border-gray-300 rounded-lg">
                         </div>
                         <div>
                             <label for="">Applied Country</label>
                             <input type="text" name="" id=""
                                 placeholder="Country you applied for"
                                 v-model="client.appliedCountry"
-                                class="w-full border border-gray-300 rounded">
+                                class="w-full border border-gray-300 rounded-lg">
                         </div>
 
                         <div>
@@ -127,7 +163,7 @@
         </div>
 
         <div>
-            <button class="bg-purple-900 px-3 py-1 rounded text-white mt-1">create</button>
+            <button @click="submitData" class="bg-purple-900 px-3 py-1 rounded text-white mt-1">create</button>
         </div>
 
        

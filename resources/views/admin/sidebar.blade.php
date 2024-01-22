@@ -54,7 +54,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ url('cash_out') }}" class="nav-link">
                         <p>
                             Cash-Out
                         </p>

@@ -29,7 +29,6 @@
                 <div class="container-fluid">
                     <div class="mb-2">
                         <counter />
-
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
