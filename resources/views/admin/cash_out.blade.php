@@ -29,7 +29,8 @@
                 <div class="container-fluid">
                     <div class="mb-2">
                         <div>
-                            <form action="">
+                            <form action="" method="POST">
+                                @csrf
                                 <div>
                                     <p class="bg-purple-700 text-center p-1 text-2xl rounded-lg text-white mb-3">
                                         CASH-OUT-DETAILS
@@ -37,7 +38,7 @@
                                     <div class="grid grid-cols-2 gap-2">
                                         <div>
                                             <label for="">Category</label>
-                                            <select name="" id=""
+                                            <select name="category" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
                                                 <option value="category-1">category-1</option>
                                                 <option value="category-2">category-2</option>
@@ -50,27 +51,27 @@
 
                                         <div>
                                             <label for="">Date</label>
-                                            <input type="date" name="" id=""
+                                            <input type="date" name="date" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
                                             <label for="">Amount</label>
-                                            <input type="number" name="" id=""
+                                            <input type="number" name="amount" id=""
                                                 placeholder="Enter the amount"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
                                             <label for="">Purpose</label>
-                                            <input type="text" name="" id=""
+                                            <input type="text" name="purpose" id=""
                                                 placeholder="Enter the purpose of cost"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
                                             <label for="">Payment Mode</label>
-                                            <select name="" id=""
+                                            <select name="payment_mode" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
                                                 <option value="cash">Cash</option>
                                                 <option value="bankt_ransfer">Bank Transfer</option>
@@ -81,35 +82,35 @@
 
                                         <div>
                                             <label for="">Payment By Name</label>
-                                            <input type="text" name="" id=""
+                                            <input type="text" name="pbn" id=""
                                                 placeholder="Enter the name"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
                                             <label for="">Payment By Number</label>
-                                            <input type="number" name="" id=""
+                                            <input type="number" name="pbm" id=""
                                                 placeholder="Enter the number"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
                                             <label for="">Tax</label>
-                                            <input type="number" name="" id=""
+                                            <input type="number" name="tax" id=""
                                                 placeholder="Enter tax amount"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
                                             <label for="">Agent</label>
-                                            <input type="text" name="" id=""
+                                            <input type="text" name="agent" id=""
                                                 placeholder="Enter the agent name"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
                                             <label for="">Images</label>
-                                            <input type="file" name="" id=""
+                                            <input type="file" name="iamge" id=""
                                                 class="w-full border border-gray-300 rounded-lg p-1 bg-white">
                                         </div>
 

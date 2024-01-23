@@ -10,17 +10,18 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('client_details', function (Blueprint $table) {
+        Schema::create('cash_out_details', function (Blueprint $table) {
             $table->id();
             $table->string('category');
             $table->date('date');
             $table->double('amount');
+            $table->string('purpose');
+            $table->string('payment_mode');
+            $table->string('pbn');
+            $table->integer('pbm');
             $table->integer('tax');
-            $table->string('cpn');
-            $table->integer('cpm');
-            $table->string('received');
-            $table->string('currency');
             $table->string('agent');
+            $table->string('currency');
             $table->string('image');
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_details');
+        Schema::dropIfExists('cash_out_details');
     }
 };
