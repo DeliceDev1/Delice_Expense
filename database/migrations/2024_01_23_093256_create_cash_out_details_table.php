@@ -14,15 +14,15 @@ return new class extends Migration {
             $table->id();
             $table->string('category');
             $table->date('date');
-            $table->double('amount');
+            $table->decimal('amount', 10, 2);
             $table->string('purpose');
             $table->string('payment_mode');
             $table->string('pbn');
-            $table->integer('pbm');
-            $table->integer('tax');
+            $table->string('pbm');
+            $table->decimal('tax', 10, 2);
             $table->string('agent');
-            $table->string('currency');
-            $table->string('image');
+            // Add any other fields you need
+
             $table->timestamps();
         });
     }

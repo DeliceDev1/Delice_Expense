@@ -15,13 +15,13 @@ return new class extends Migration {
             $table->string('category');
             $table->date('date');
             $table->double('amount');
-            $table->integer('tax');
+            $table->double('tax');
             $table->string('cpn');
             $table->integer('cpm');
             $table->string('received');
             $table->string('currency');
             $table->string('agent');
-            $table->string('image');
+            $table->string('images');
             $table->timestamps();
         });
     }

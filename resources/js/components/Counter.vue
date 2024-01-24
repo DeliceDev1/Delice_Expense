@@ -2,13 +2,40 @@
     import { ref, reactive } from 'vue';
 
     // object to handle the static part of form
-    const clientDetails = reactive({ category: '', date: null, amount: 0, tax: 0, cpn: '', cpm: null, received: '', currency: 'tk' });
+    const clientDetails = reactive({ 
+        category: '', 
+        date: null, 
+        amount: 0, 
+        tax: 0, 
+        cpn: '', 
+        cpm: null, 
+        received: '', 
+        agent: '',
+        currency: 'tk',
+        images: []
+     });
 
+
+     //for image 
+     const imageInput = ref(null);
+
+     //for iamge
+     const handleImageChange = (event) => {
+        const files = event.target.files;
+        console.log('Selected Files:', files);
+        clientDetails.images = Array.from(files);
+    };
+ 
 
     // array of object to handle the dynamic form data 
     const clientsFile = reactive([
-    { name: '',  passport: null , nationality:'', appliedCountry:''},
-    ]);
+        {
+            name: '', 
+            passport: null ,
+            nationality:'',
+            appliedCountry:''
+        }
+        ]);
     
     // variable to control checkbox
     const showClient=ref(false);
@@ -27,9 +54,26 @@
 
     // function to handle form data
     const submitData = async() => {
+        const formData = new FormData();
+
+            clientDetails.images.forEach((image, index) => {
+                formData.append(`image${index + 1}`, image);
+            });
+
+
+            formData.append('category', clientDetails.category);
+            formData.append('date', clientDetails.date);
+            formData.append('amount', clientDetails.amount);
+            formData.append('tax', clientDetails.tax);
+            formData.append('agent', clientDetails.agent);
+            formData.append('cpm', clientDetails.cpm);
+            formData.append('cpn', clientDetails.cpn);
+            formData.append('received', clientDetails.received);
+            formData.append('currency', clientDetails.currency);
+
         const data= await axios.post('/api/store-client-data',{
             clientsFile: clientsFile,
-            clientDetails: clientDetails
+            formData
         })
     }
 
@@ -44,6 +88,7 @@
                     <label for="" class="font-normal">Category</label>
                     <select name="cars" id="cars" v-model="clientDetails.category"
                         class="w-full border border-gray-300 rounded-xl">
+                        <option value="">--Choose a category-- </option>
                         <option value="category-1">category-1</option>
                         <option value="category-2">category-2</option>
                         <option value="category-3">category-3</option>
@@ -82,6 +127,7 @@
                     <label for="" class="font-normal">Received Mode</label>
                     <select name="" id="" v-model="clientDetails.received"
                         class="w-full border border-gray-300 rounded-xl">
+                        <option value="">--choose an option--</option>
                         <option value="cash">Cash</option>
                         <option value="bank-transfer">Bank Transfer</option>
                         <option value="check-book">Check Book</option>
@@ -90,16 +136,16 @@
                 </div>
                 <div>
                     <label for="">Currency</label>
-                    <input type="text" name="" id="" placeholder="Tk" class="w-full border border-gray-300 rounded-xl">
+                    <input type="text" name="currency" id="" placeholder="Tk" class="w-full border border-gray-300 rounded-xl">
                 </div>
 
                 <div>
                     <label for="">Agent</label>
-                    <input type="text" name="" id="" placeholder="Enter the agent name" class="w-full border border-gray-300 rounded-xl">
+                    <input type="text" name="agent" id="" v-model="clientDetails.agent" placeholder="Enter the agent name" class="w-full border border-gray-300 rounded-xl">
                 </div>
                 <div>
                     <label for="">Images</label>
-                    <input type="file" name="" id="" class="w-full border border-gray-300 rounded-lg p-1 bg-white">
+                    <input type="file" ref="imageInput" @change="handleImageChange" name="images" id="" multiple  class="w-full border border-gray-300 rounded-lg p-1 bg-white">
                 </div>
             </div>
         </form>

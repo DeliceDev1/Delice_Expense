@@ -29,10 +29,12 @@
                 <div class="container-fluid">
                     <div class="mb-2">
                         <div>
-                            <form action="" method="POST">
+                            <form action="" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div>
-                                    <p class="bg-purple-700 text-center p-1 text-2xl rounded-lg text-white mb-3">
+                                    <p
+                                        class="bg-purple-700
+                                text-center p-1 text-2xl rounded-lg text-white mb-3">
                                         CASH-OUT-DETAILS
                                     </p>
                                     <div class="grid grid-cols-2 gap-2">
@@ -40,6 +42,7 @@
                                             <label for="">Category</label>
                                             <select name="category" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
+                                                <option value="">--select an option--</option>
                                                 <option value="category-1">category-1</option>
                                                 <option value="category-2">category-2</option>
                                                 <option value="category-3">category-3</option>
@@ -73,6 +76,7 @@
                                             <label for="">Payment Mode</label>
                                             <select name="payment_mode" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
+                                                <option value="">--select an option--</option>
                                                 <option value="cash">Cash</option>
                                                 <option value="bankt_ransfer">Bank Transfer</option>
                                                 <option value="cash_book">Cash Book</option>
@@ -110,8 +114,8 @@
 
                                         <div>
                                             <label for="">Images</label>
-                                            <input type="file" name="iamge" id=""
-                                                class="w-full border border-gray-300 rounded-lg p-1 bg-white">
+                                            <input type="file" name="iamges[]" id=""
+                                                class="w-full border border-gray-300 rounded-lg p-1 bg-white" multiple>
                                         </div>
 
 
