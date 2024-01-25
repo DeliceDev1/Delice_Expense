@@ -11,19 +11,26 @@
         cpm: null, 
         received: '', 
         agent: '',
-        currency: 'tk',
-        images: []
+        currency: 'Tk',
+        image: null
      });
 
 
      //for image 
      const imageInput = ref(null);
 
-     //for iamge
-     const handleImageChange = (event) => {
-        const files = event.target.files;
-        console.log('Selected Files:', files);
-        clientDetails.images = Array.from(files);
+     //for multiple images
+    //  const handleImageChange = (event) => {
+    //     const files = event.target.files;
+    //     console.log('Selected Files:', files);
+    //     clientDetails.images = Array.from(files);
+    // };
+
+    //for single image
+    const handleImageChange = (event) => {
+        const file = event.target.files[0]; // Take the first file if multiple files are selected
+        console.log('Selected File:', file);
+        clientDetails.image = file;
     };
  
 
@@ -55,12 +62,12 @@
     // function to handle form data
     const submitData = async() => {
         const formData = new FormData();
+            //for managing multiple images.
+            // clientDetails.images.forEach((image, index) => {
+            //     formData.append(`image${index + 1}`, image);
+            // });
 
-            clientDetails.images.forEach((image, index) => {
-                formData.append(`image${index + 1}`, image);
-            });
-
-
+            formData.append('image',clientDetails.image);
             formData.append('category', clientDetails.category);
             formData.append('date', clientDetails.date);
             formData.append('amount', clientDetails.amount);
@@ -90,11 +97,6 @@
                         class="w-full border border-gray-300 rounded-xl">
                         <option value="">--Choose a category-- </option>
                         <option value="category-1">category-1</option>
-                        <option value="category-2">category-2</option>
-                        <option value="category-3">category-3</option>
-                        <option value="category-4">category-4</option>
-                        <option value="category-3">category-5</option>
-                        <option value="category-6">category-6</option>
                     </select>
                 </div>
                 <div>
@@ -136,7 +138,7 @@
                 </div>
                 <div>
                     <label for="">Currency</label>
-                    <input type="text" name="currency" id="" placeholder="Tk" class="w-full border border-gray-300 rounded-xl">
+                    <input type="text" name="currency" value="Tk" id="" placeholder="Tk" class="w-full border border-gray-300 rounded-xl">
                 </div>
 
                 <div>
@@ -145,7 +147,7 @@
                 </div>
                 <div>
                     <label for="">Images</label>
-                    <input type="file" ref="imageInput" @change="handleImageChange" name="images" id="" multiple  class="w-full border border-gray-300 rounded-lg p-1 bg-white">
+                    <input type="file" ref="imageInput" @change="handleImageChange" name="image" id="" class="w-full border border-gray-300 rounded-lg p-1 bg-white">
                 </div>
             </div>
         </form>

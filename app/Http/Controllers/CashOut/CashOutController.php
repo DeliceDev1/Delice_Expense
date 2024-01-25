@@ -8,21 +8,44 @@ use Illuminate\Http\Request;
 
 class CashOutController extends Controller
 {
-    public function store(Request $request){
-        $validatedData = $request->validate([
+    public function store_cash_out_data(Request $request)
+    {
+        $request->validate([
             'category' => 'required',
             'date' => 'required|date',
             'amount' => 'required|numeric',
-            //'purpose' => 'required|string',
+            'purpose' => 'nullable|string',
             'payment_mode' => 'required',
-            'pbn' => 'required|string',
+            'pbn' => 'nullable|string',
             'pbm' => 'required|numeric',
-            //'tax' => 'required|numeric',
-           // 'agent' => 'required|string',
-
+            'tax' => 'nullable|numeric',
+            'agent' => 'nullable|string',
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,pdf|max:2048',
         ]);
 
-        // Create and save the CashOut model
-        $cashOut = CashOutDetail::create($validatedData);
+        $cashOutDetail = new CashOutDetail([
+            'category' => $request->category,
+            'date' => $request->date,
+            'amount' => $request->amount,
+            'purpose' => $request->purpose,
+            'payment_mode' => $request->payment_mode,
+            'pbn' => $request->pbn,
+            'pbm' => $request->pbm,
+            'tax' => $request->tax,
+            'agent' => $request->agent,
+        ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = 'custom_image_name.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('images', $imageName, 'public');
+            $cashOutDetail->image_path = $imagePath;
+        }
+
+        $cashOutDetail->save();
+
+        return response()->json(['message' => ' data stored successfully'], 201);
+
     }
 }

@@ -12,11 +12,18 @@ return new class extends Migration {
     {
         Schema::create('client_files', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('client_detail_id'); // Foreign key to link to ClientDetail
             $table->string('name');
-            $table->string('passport');
+            $table->bigInteger('passport');
             $table->string('nationality');
             $table->string('appliedCountry');
             $table->timestamps();
+
+            // Define foreign key constraint
+            $table->foreign('client_detail_id')
+                ->references('id')
+                ->on('client_details')
+                ->onDelete('cascade');
         });
     }
 

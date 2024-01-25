@@ -11,18 +11,20 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('client_details', function (Blueprint $table) {
+
             $table->id();
             $table->string('category');
             $table->date('date');
-            $table->double('amount');
-            $table->double('tax');
-            $table->string('cpn');
-            $table->integer('cpm');
+            $table->decimal('amount', 10, 2);
+            $table->decimal('tax', 10, 2)->nullable();
+            $table->string('cpn')->nullable();
+            $table->bigInteger('cpm')->nullable();
             $table->string('received');
-            $table->string('currency');
-            $table->string('agent');
-            $table->string('images');
+            $table->string('agent')->nullable();
+            $table->string('currency')->nullable();
+            $table->string('image_path')->nullable(); // Assuming you store the image path in the database
             $table->timestamps();
+
         });
     }
 

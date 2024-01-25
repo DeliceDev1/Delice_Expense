@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CashOut\CashOutController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,8 @@ Route::get('/cash_in', function () {
 Route::get('/cash_out', function () {
     return view('admin.cash_out');
 });
+
+Route::post('/cash_out_form_data', [CashOutController::class, 'store_cash_out_data'])->name('form_out');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

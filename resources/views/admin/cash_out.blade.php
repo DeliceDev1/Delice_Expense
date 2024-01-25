@@ -29,12 +29,10 @@
                 <div class="container-fluid">
                     <div class="mb-2">
                         <div>
-                            <form action="" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('form_out') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div>
-                                    <p
-                                        class="bg-purple-700
-                                text-center p-1 text-2xl rounded-lg text-white mb-3">
+                                    <p class="bg-purple-700 text-center p-1 text-2xl rounded-lg text-white mb-3">
                                         CASH-OUT-DETAILS
                                     </p>
                                     <div class="grid grid-cols-2 gap-2">
@@ -114,8 +112,8 @@
 
                                         <div>
                                             <label for="">Images</label>
-                                            <input type="file" name="iamges[]" id=""
-                                                class="w-full border border-gray-300 rounded-lg p-1 bg-white" multiple>
+                                            <input type="file" name="image" id=""
+                                                class="w-full border border-gray-300 rounded-lg p-1 bg-white">
                                         </div>
 
 

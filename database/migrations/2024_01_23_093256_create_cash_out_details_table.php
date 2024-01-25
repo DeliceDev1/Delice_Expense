@@ -15,13 +15,13 @@ return new class extends Migration {
             $table->string('category');
             $table->date('date');
             $table->decimal('amount', 10, 2);
-            $table->string('purpose');
+            $table->string('purpose')->nullable();
             $table->string('payment_mode');
-            $table->string('pbn');
-            $table->string('pbm');
-            $table->decimal('tax', 10, 2);
-            $table->string('agent');
-            // Add any other fields you need
+            $table->string('pbn')->nullable();
+            $table->string('pbm')->nullable();
+            $table->decimal('tax', 10, 2)->nullable();
+            $table->string('agent')->nullable();
+            
 
             $table->timestamps();
         });
