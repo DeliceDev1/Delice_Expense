@@ -14,14 +14,14 @@ return new class extends Migration {
             $table->id();
             $table->string('category');
             $table->date('date');
-            $table->decimal('amount', 10, 2);
+            $table->decimal('amount', 14, 4);
             $table->string('purpose')->nullable();
             $table->string('payment_mode');
             $table->string('pbn')->nullable();
             $table->string('pbm')->nullable();
-            $table->decimal('tax', 10, 2)->nullable();
+            $table->decimal('tax', 14, 4)->nullable();
             $table->string('agent')->nullable();
-            
+
 
             $table->timestamps();
         });

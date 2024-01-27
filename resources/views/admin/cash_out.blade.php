@@ -76,7 +76,7 @@
                                                 class="w-full border border-gray-300 rounded-xl">
                                                 <option value="">--select an option--</option>
                                                 <option value="cash">Cash</option>
-                                                <option value="bankt_ransfer">Bank Transfer</option>
+                                                <option value="bank_transfer">Bank Transfer</option>
                                                 <option value="cash_book">Cash Book</option>
                                                 <option value="others">Others</option>
                                             </select>

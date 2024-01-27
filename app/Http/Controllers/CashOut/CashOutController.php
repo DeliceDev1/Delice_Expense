@@ -24,6 +24,7 @@ class CashOutController extends Controller
         ]);
 
         $cashOutDetail = new CashOutDetail([
+
             'category' => $request->category,
             'date' => $request->date,
             'amount' => $request->amount,
@@ -38,8 +39,10 @@ class CashOutController extends Controller
         // Handle image upload
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = 'custom_image_name.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('images', $imageName, 'public');
+            // $imageName = 'custom_image_name.' . $image->getClientOriginalExtension();
+            $imageName = time() . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+            // $imagePath = $image->storeAs('images', $imageName, 'public');
+            $imagePath = $image->move('images', $imageName);
             $cashOutDetail->image_path = $imagePath;
         }
 
@@ -47,5 +50,10 @@ class CashOutController extends Controller
 
         return response()->json(['message' => ' data stored successfully'], 201);
 
+    }
+
+    public function dispaly_cash_out()
+    {
+        return view('admin.cash_out_details');
     }
 }

@@ -24,12 +24,17 @@ Route::get('/cash_in', function () {
     return view('admin.cash_in');
 });
 
-// route for cash-out
+// route for cash-out layout
 Route::get('/cash_out', function () {
     return view('admin.cash_out');
 });
 
+// route for inserting post data
 Route::post('/cash_out_form_data', [CashOutController::class, 'store_cash_out_data'])->name('form_out');
+
+// route for displaying cash_out data
+Route::get('/cash_out_details', [CashOutController::class, 'dispaly_cash_out'])->name('diaplay_out');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

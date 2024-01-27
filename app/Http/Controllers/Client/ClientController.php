@@ -11,6 +11,7 @@ class ClientController extends Controller
 {
     public function store(Request $request)
     {
+       
         $request->validate([
             'category' => 'required|string',
             'date' => 'required|date',
@@ -21,7 +22,13 @@ class ClientController extends Controller
             'received' => 'required|string',
             'agent' => 'nullable|string',
             'currency' => 'string',
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif,pdf|max:2048', // adjust file types and size as needed
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,pdf|max:2048', 
+
+            'clientsFile.*.name' => 'required|string',
+            'clientsFile.*.passport' => 'required|numeric',
+            'clientsFile.*.nationality' => 'required|string',
+            'clientsFile.*.appliedCountry' => 'required|string',
+
         ]);
 
         // Handle image upload for ClientDetail
@@ -39,20 +46,16 @@ class ClientController extends Controller
             'agent' => $request->input('agent'),
             'currency' => $request->input('currency'),
             'image_path' => $imagePath, // store the image path in the database
+
+           
         ]);
 
         $clientDetail->save();
 
         // Validate the incoming request data for ClientFile
-        $request->validate([
-            'clientsFile.*.name' => 'required|string',
-            'clientsFile.*.passport' => 'required|numeric',
-            'clientsFile.*.nationality' => 'required|string',
-            'clientsFile.*.appliedCountry' => 'required|string',
-        ]);
-
+        
         // Handle client files
-        foreach ($request->input('clientsFile') as $clientFileData) {
+        foreach ($request->input('clientFile') as $clientFileData) {
             $clientFile = new ClientFile($clientFileData);
             $clientDetail->clientFiles()->save($clientFile);
         }

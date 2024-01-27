@@ -61,6 +61,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ url('cash_out_details') }}" class="nav-link">
+                        <p>
+                            Cash-Out-Details
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <p>
                             To-Do

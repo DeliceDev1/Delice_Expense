@@ -19,7 +19,7 @@
      //for image 
      const imageInput = ref(null);
 
-     //for multiple images
+    //for multiple images
     //  const handleImageChange = (event) => {
     //     const files = event.target.files;
     //     console.log('Selected Files:', files);
@@ -78,10 +78,19 @@
             formData.append('received', clientDetails.received);
             formData.append('currency', clientDetails.currency);
 
-        const data= await axios.post('/api/store-client-data',{
-            clientsFile: clientsFile,
-            formData
-        })
+            clientsFile.forEach((client, index) => {
+                formData.append(`clientFile[${index}][name]`, client.name);
+                formData.append(`clientFile[${index}][passport]`, client.passport);
+                formData.append(`clientFile[${index}][nationality]`, client.nationality);
+                formData.append(`clientFile[${index}][appliedCountry]`, client.appliedCountry);
+            });
+
+
+        const data = await axios.post('/api/store-client-data', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
     }
 
 </script>
