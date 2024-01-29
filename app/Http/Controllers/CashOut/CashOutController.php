@@ -5,6 +5,8 @@ namespace App\Http\Controllers\CashOut;
 use App\Http\Controllers\Controller;
 use App\Models\CashOutDetail;
 use Illuminate\Http\Request;
+use Session;
+use File;
 
 class CashOutController extends Controller
 {
@@ -20,8 +22,15 @@ class CashOutController extends Controller
             'pbm' => 'required|numeric',
             'tax' => 'nullable|numeric',
             'agent' => 'nullable|string',
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif,pdf|max:2048',
+            'image_path' => 'nullable|mimes:jpeg,png,jpg,gif,pdf|max:10240',
         ]);
+
+        $imageName = "";
+        if ($image_path = $request->file('image_path')) {
+            $imageName = time() . '-' . uniqid() . '.' . $image_path->getClientOriginalExtension();
+            $image_path->move('images/', $imageName);
+        }
+
 
         $cashOutDetail = new CashOutDetail([
 
@@ -34,26 +43,121 @@ class CashOutController extends Controller
             'pbm' => $request->pbm,
             'tax' => $request->tax,
             'agent' => $request->agent,
+            'image_path' => $imageName,
         ]);
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            // $imageName = 'custom_image_name.' . $image->getClientOriginalExtension();
-            $imageName = time() . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-            // $imagePath = $image->storeAs('images', $imageName, 'public');
-            $imagePath = $image->move('images', $imageName);
-            $cashOutDetail->image_path = $imagePath;
-        }
+
+        // if ($request->hasFile('image_path')) {
+        //     $image = $request->file('image');
+        //     // $imageName = 'custom_image_name.' . $image->getClientOriginalExtension();
+        //     $imageName = time() . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+        //     // $imagePath = $image->storeAs('images', $imageName, 'public');
+        //     $image->move('images/', $imageName);
+        //     $cashOutDetail->image_path = $imageName;
+        // } 
+
+
 
         $cashOutDetail->save();
-
-        return response()->json(['message' => ' data stored successfully'], 201);
+        Session::flash('msg', 'Data Added Succesfuly');
+        return redirect()->back();
 
     }
 
     public function dispaly_cash_out()
     {
-        return view('admin.cash_out_details');
+        $data = CashOutDetail::all();
+
+        return view('admin.cash_out_details', compact('data'));
+    }
+
+    public function edit_cash_out($id)
+    {
+        $edit_data = CashOutDetail::findOrFail($id);
+
+
+        return view('admin.edit_cash_out', compact('edit_data'));
+    }
+
+    public function update_cash_out($id, Request $request)
+    {
+        $update_data = CashOutDetail::findOrFail($id);
+
+        $request->validate([
+            'category' => 'required',
+            'date' => 'required|date',
+            'amount' => 'required|numeric',
+            'purpose' => 'nullable|string',
+            'payment_mode' => 'required',
+            'pbn' => 'nullable|string',
+            'pbm' => 'required|numeric',
+            'tax' => 'nullable|numeric',
+            'agent' => 'nullable|string',
+            'image_path' => 'nullable|mimes:jpeg,png,jpg,gif,pdf|max:10240',
+        ]);
+
+        $imageName = "";
+        $deleteOldImage = 'images/' . $update_data->image_path;
+        if ($image_path = $request->file('image_path')) {
+            if (file_exists($deleteOldImage)) {
+                File::delete($deleteOldImage);
+            }
+            $imageName = time() . '-' . uniqid() . '.' . $image_path->getClientOriginalExtension();
+            $image_path->move('images/', $imageName);
+        } else {
+            $imageName = $update_data->image_path;
+        }
+
+
+        CashOutDetail::where('id', $id)->update([
+
+
+            'category' => $request->category,
+            'date' => $request->date,
+            'amount' => $request->amount,
+            'purpose' => $request->purpose,
+            'payment_mode' => $request->payment_mode,
+            'pbn' => $request->pbn,
+            'pbm' => $request->pbm,
+            'tax' => $request->tax,
+            'agent' => $request->agent,
+            'image_path' => $imageName,
+
+        ]);
+
+
+
+        Session::flash('msg', 'Data Updated Succesfuly');
+        // return redirect()->back();
+        return redirect()->route('display_out');
+    }
+
+    public function delete_cash_out($id)
+    {
+        $delete_cash_out_data = CashOutDetail::find($id);
+
+        $deleteOldImage = 'images/' . $delete_cash_out_data->image_path;
+        if (file_exists($deleteOldImage)) {
+            File::delete($deleteOldImage);
+        }
+
+        $delete_cash_out_data->delete();
+        Session::flash('msg', 'Data Deleted successfuly');
+        return redirect()->route('display_out');
+
+    }
+
+    public function filter(Request $request)
+    {
+
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+
+        // $data = CashOutDetail::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->get();
+        $data = CashOutDetail::whereDate('created_at', '>=', $start_date)
+            ->whereDate('created_at', '<=', $end_date)
+            ->get();
+        return view('admin.cash_out_details', compact('data'));
+
     }
 }

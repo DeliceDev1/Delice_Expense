@@ -30,23 +30,85 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="mb-2">
-
+                        @if (Session::has('msg'))
+                            <div class="bg-green-200 border border-red-400 text-red-700 px-4 py-3 mb-2 rounded relative"
+                                role="alert">
+                                <strong class="font-bold">Hurrahhh!</strong>
+                                <span class="block sm:inline">{{ Session::get('msg') }}</span>
+                                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                                    <svg class="fill-current h-6 w-6 text-red-500" role="button"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <title>Close</title>
+                                        <path
+                                            d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                                    </svg>
+                                </span>
+                            </div>
+                        @endif
 
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg bg-purple-100">
                             <div class="p-4 bg-purple-300 dark:bg-gray-900">
-                                <label for="table-search" class="sr-only">Search</label>
-                                <div class="relative mt-1">
-                                    <div
-                                        class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                        </svg>
+                                <div class="flex items-center justify-end text-white">
+                                    <!-- Date Range Picker -->
+                                    <div class="flex items-center space-x-4">
+                                        <form action="{{ route('filter') }}" class="flex flex-normal space-x-4">
+                                            <div class="flex flex-col">
+                                                <label for="startDate"
+                                                    class="block text-sm font-medium text-gray-600">Start
+                                                    Date</label>
+                                                <input type="date" id="startDate" name="start_date"
+                                                    class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                                            </div>
+
+                                            <div class="flex flex-col">
+                                                <label for="endDate"
+                                                    class="block text-sm font-medium text-gray-600">End
+                                                    Date</label>
+                                                <input type="date" id="endDate" name="end_date"
+                                                    class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                                            </div>
+                                            <div class="flex flex-col mt-4 ml-3">
+                                                {{-- <a href=""
+                                                    class="bg-purple-600 px-3 py-2 text-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">Filter</a> --}}
+
+                                                <button type="submit"
+                                                    class="bg-purple-600 px-3 py-2 text-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">Filter</button>
+                                            </div>
+                                        </form>
+
+                                        <!-- Other Filters (Add your own as needed) -->
+                                        <div class="flex flex-col">
+                                            <label for="category"
+                                                class="block text-sm font-medium text-gray-600">Category</label>
+                                            <select id="category" name="category"
+                                                class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                                                <option value="">__select an option__</option>
+                                                <option value="category-1">category-1</option>
+                                                <option value="category-2">category-2</option>
+                                                <option value="category-3">category-3</option>
+                                                <option value="category-4">category-4</option>
+                                                <option value="category-3">category-5</option>
+                                                <option value="category-6">category-6</option>
+                                            </select>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label for="category"
+                                                class="block text-sm font-medium text-gray-600">Payment Mode</label>
+                                            <select id="category" name="payment_mode"
+                                                class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                                                <option value="">__select an option__</option>
+                                                <option value="cash">Cash</option>
+                                                <option value="bank_transfer">Bank Transfer</option>
+                                                <option value="cash_book">Cash Book</option>
+                                                <option value="others">Others</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <input type="text" id="table-search"
-                                        class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Search for items">
+
+                                    <div class="flex flex-col mt-4 ml-3">
+                                        <a href=""
+                                            class="bg-purple-600 px-3 py-2 text-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">Filter</a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="p-4 responsive">
@@ -54,7 +116,9 @@
                                     class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
                                     <thead class="text-xs uppercase bg-purple-600 text-white rounded-lg">
                                         <tr>
-
+                                            <th scope="col" class="px-6 py-3">
+                                                No
+                                            </th>
                                             <th scope="col" class="px-6 py-3">
                                                 Category
                                             </th>
@@ -94,170 +158,75 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr
-                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        @foreach ($data as $key => $data)
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-md">
 
+                                                <td class="w-4 p-4">
+                                                    {{ $key + 1 }}
+                                                </td>
 
-                                            <td class="w-4 p-4">
-                                                #
-                                            </td>
+                                                <td class="w-4 p-4">
+                                                    {{ $data->category }}
+                                                </td>
 
-                                            <td class="w-4 p-4">
-                                                10-12-2023
-                                            </td>
+                                                <td class="w-4 p-4">
+                                                    {{ $data->amount }}
+                                                </td>
 
-                                            <td class="px-6 py-4">
-                                                Silver
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                Laptop
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $data
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="flex">
-                                                    <div class="mr-2">
-                                                        <button
-                                                            class="items-center justify-center text-blue rounded-lg text-lg p-1 hover:bg-blue-200">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
+                                                <td class="px-6 py-4">
+                                                    {{ $data->date }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ $data->purpose }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ $data->payment_mode }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ $data->pbn }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ $data->pbm }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ $data->tax }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ $data->agent }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{-- <img src="{{ asset('images/' . $data->image_path) }}"
+                                                        alt="image---"> --}}
+                                                    <img src="{{ asset('images/' . $data->image_path) }}"
+                                                        alt="image">
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex">
+                                                        <div class="mr-2">
+                                                            <a href="{{ route('edit_out', $data->id) }}"
+                                                                class="items-center justify-center text-blue rounded-lg text-lg p-1 hover:bg-blue-200">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div>
+                                                            {{-- <button
+                                                                class=" items-center justify-center text-red text-lg rounded-lg p-1 hover:bg-red-200">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button> --}}
+                                                            <a href="{{ route('delete_out', $data->id) }}"
+                                                                class=" items-center justify-center text-red text-lg rounded-lg p-1 hover:bg-red-200"><i
+                                                                    class="fas fa-trash-alt"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <button
-                                                            class=" items-center justify-center text-red text-lg rounded-lg p-1 hover:bg-red-200">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <button class="bg-blue-600 text-white rounded px-3 py-1">pdf</button>
-                                            </td>
-                                        </tr>
-                                        <tr
-                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-
-                                            <td class="w-4 p-4">
-                                                #
-                                            </td>
-                                            <th scope="row"
-                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Apple MacBook Pro 17"
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                Silver
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                Laptop
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                        </tr>
-                                        <tr
-                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-
-                                            <td class="w-4 p-4">
-                                                #
-                                            </td>
-                                            <th scope="row"
-                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Apple MacBook Pro 17"
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                Silver
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                Laptop
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                        </tr>
-                                        <tr
-                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-
-
-                                            <td class="w-4 p-4">
-                                                #
-                                            </td>
-                                            <th scope="row"
-                                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Apple MacBook Pro 17"
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                Silver
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                Laptop
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                $2999
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <a
+                                                        class="bg-purple-600 cursor-pointer hover:bg-blue-500 text-white rounded px-3 py-1 ">pdf</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

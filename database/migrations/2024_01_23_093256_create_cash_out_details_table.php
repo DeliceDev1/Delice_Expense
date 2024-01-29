@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('category');
             $table->date('date');
-            $table->decimal('amount', 14, 4);
+            $table->double('amount', 15, 2)->change();
             $table->string('purpose')->nullable();
             $table->string('payment_mode');
             $table->string('pbn')->nullable();

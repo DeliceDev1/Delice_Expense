@@ -33,7 +33,21 @@ Route::get('/cash_out', function () {
 Route::post('/cash_out_form_data', [CashOutController::class, 'store_cash_out_data'])->name('form_out');
 
 // route for displaying cash_out data
-Route::get('/cash_out_details', [CashOutController::class, 'dispaly_cash_out'])->name('diaplay_out');
+Route::get('/cash_out_details', [CashOutController::class, 'dispaly_cash_out'])->name('display_out');
+
+//Route to edit cash out data
+Route::get('/edit_cash_out/{id}', [CashOutController::class, 'edit_cash_out'])->name('edit_out');
+
+//Route for updating cash_out data
+Route::post('/update_cash_out/{id}', [CashOutController::class, 'update_cash_out'])->name('update_out');
+
+//Route to delete
+Route::get('/delete_cash_out/{id}', [CashOutController::class, 'delete_cash_out'])->name('delete_out');
+
+//route to filter by data
+Route::get('/filter', [CashOutController::class, 'filter'])->name('filter');
+
+
 
 
 Route::get('/dashboard', function () {

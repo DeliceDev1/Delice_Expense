@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\ClientDetail;
 use App\Models\ClientFile;
 use Illuminate\Http\Request;
+use Session;
 
 class ClientController extends Controller
 {
     public function store(Request $request)
     {
-       
+
         $request->validate([
             'category' => 'required|string',
             'date' => 'required|date',
@@ -22,10 +23,10 @@ class ClientController extends Controller
             'received' => 'required|string',
             'agent' => 'nullable|string',
             'currency' => 'string',
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif,pdf|max:2048', 
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,pdf|max:10240',
 
             'clientsFile.*.name' => 'required|string',
-            'clientsFile.*.passport' => 'required|numeric',
+            'clientsFile.*.passport' => 'required|string',
             'clientsFile.*.nationality' => 'required|string',
             'clientsFile.*.appliedCountry' => 'required|string',
 
@@ -47,20 +48,21 @@ class ClientController extends Controller
             'currency' => $request->input('currency'),
             'image_path' => $imagePath, // store the image path in the database
 
-           
+
         ]);
 
         $clientDetail->save();
 
-        // Validate the incoming request data for ClientFile
-        
+
+
         // Handle client files
         foreach ($request->input('clientFile') as $clientFileData) {
             $clientFile = new ClientFile($clientFileData);
             $clientDetail->clientFiles()->save($clientFile);
         }
 
-        // You may want to return a response indicating success
+        Session::flash('msg', 'Data Added Succesfully');
+        // return a response indicating success
         return response()->json(['message' => ' data stored successfully'], 201);
 
 
