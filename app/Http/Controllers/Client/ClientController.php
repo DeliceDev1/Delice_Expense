@@ -63,7 +63,7 @@ class ClientController extends Controller
 
         Session::flash('msg', 'Data Added Succesfully');
         // return a response indicating success
-        return response()->json(['message' => ' data stored successfully'], 201);
+        return redirect()->back();
 
 
 

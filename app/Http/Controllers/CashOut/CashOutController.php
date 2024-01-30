@@ -149,15 +149,43 @@ class CashOutController extends Controller
 
     public function filter(Request $request)
     {
+        //first catching the values from input field.
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $category = $request->input('category');
+        $paymentMode = $request->input('payment_mode');
+        $number = $request->input('pbm');
+        $name = $request->input('pbn');
+        $agent = $request->input('agent');
 
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
-
-        // $data = CashOutDetail::whereDate('created_at', '>=', $start_date)->whereDate('created_at', '<=', $end_date)->get();
-        $data = CashOutDetail::whereDate('created_at', '>=', $start_date)
-            ->whereDate('created_at', '<=', $end_date)
+        // Query to filter data based on inputs
+        $data = CashOutDetail::when($startDate, function ($query) use ($startDate) {
+            $query->where('date', '>=', $startDate);
+        })
+            ->when($endDate, function ($query) use ($endDate) {
+                $query->where('date', '<=', $endDate);
+            })
+            ->when($category, function ($query) use ($category) {
+                $query->where('category', $category);
+            })
+            ->when($paymentMode, function ($query) use ($paymentMode) {
+                $query->where('payment_mode', $paymentMode);
+            })
+            ->when($number, function ($query) use ($number) {
+                $query->where('pbm', $number);
+            })
+            ->when($name, function ($query) use ($name) {
+                $query->where('pbn', $name);
+            })
+            ->when($agent, function ($query) use ($agent) {
+                $query->where('agent', $agent);
+            })
             ->get();
+
+
         return view('admin.cash_out_details', compact('data'));
+
+
 
     }
 }

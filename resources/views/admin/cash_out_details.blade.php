@@ -53,6 +53,27 @@
                                     <div class="flex items-center space-x-4">
                                         <form action="{{ route('filter') }}" class="flex flex-normal space-x-4">
                                             <div class="flex flex-col">
+                                                <label for="searchByName"
+                                                    class="block text-sm font-medium text-gray-600">Search_By_Agent</label>
+                                                <input type="text" id="agent" name="agent"
+                                                    placeholder="Enter agent name"
+                                                    class="w-full h-10 text-black px-15 border border-purple-600 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <label for="searchByName"
+                                                    class="block text-sm font-medium text-gray-600">Search_By_Name</label>
+                                                <input type="text" id="pbn" name="pbn"
+                                                    placeholder="Enter name"
+                                                    class="w-full h-10 text-black px-15 border border-purple-600 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <label for="searchByName"
+                                                    class="block text-sm font-medium text-gray-600">Search_By_Number</label>
+                                                <input type="number" id="pbm" name="pbm"
+                                                    placeholder="Enter mobile number"
+                                                    class="w-full h-10 text-black px-15 border border-purple-600 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                                            </div>
+                                            <div class="flex flex-col">
                                                 <label for="startDate"
                                                     class="block text-sm font-medium text-gray-600">Start
                                                     Date</label>
@@ -67,48 +88,45 @@
                                                 <input type="date" id="endDate" name="end_date"
                                                     class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
                                             </div>
+
+
+                                            <!-- Other Filters (Add your own as needed) -->
+                                            <div class="flex flex-col">
+                                                <label for="category"
+                                                    class="block text-sm font-medium text-gray-600">Category</label>
+                                                <select id="category" name="category"
+                                                    class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                                                    <option value="">__select an option__</option>
+                                                    <option value="category-1">category-1</option>
+                                                    <option value="category-2">category-2</option>
+                                                    <option value="category-3">category-3</option>
+                                                    <option value="category-4">category-4</option>
+                                                    <option value="category-3">category-5</option>
+                                                    <option value="category-6">category-6</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <label for="category"
+                                                    class="block text-sm font-medium text-gray-600">Payment Mode</label>
+                                                <select id="category" name="payment_mode"
+                                                    class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                                                    <option value="">__select an option__</option>
+                                                    <option value="cash">Cash</option>
+                                                    <option value="bank_transfer">Bank Transfer</option>
+                                                    <option value="cash_book">Cash Book</option>
+                                                    <option value="others">Others</option>
+                                                </select>
+                                            </div>
                                             <div class="flex flex-col mt-4 ml-3">
-                                                {{-- <a href=""
-                                                    class="bg-purple-600 px-3 py-2 text-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">Filter</a> --}}
 
                                                 <button type="submit"
-                                                    class="bg-purple-600 px-3 py-2 text-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">Filter</button>
+                                                    class="bg-purple-600 px-3 py-2 text-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">Filter
+                                                </button>
                                             </div>
                                         </form>
-
-                                        <!-- Other Filters (Add your own as needed) -->
-                                        <div class="flex flex-col">
-                                            <label for="category"
-                                                class="block text-sm font-medium text-gray-600">Category</label>
-                                            <select id="category" name="category"
-                                                class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
-                                                <option value="">__select an option__</option>
-                                                <option value="category-1">category-1</option>
-                                                <option value="category-2">category-2</option>
-                                                <option value="category-3">category-3</option>
-                                                <option value="category-4">category-4</option>
-                                                <option value="category-3">category-5</option>
-                                                <option value="category-6">category-6</option>
-                                            </select>
-                                        </div>
-                                        <div class="flex flex-col">
-                                            <label for="category"
-                                                class="block text-sm font-medium text-gray-600">Payment Mode</label>
-                                            <select id="category" name="payment_mode"
-                                                class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
-                                                <option value="">__select an option__</option>
-                                                <option value="cash">Cash</option>
-                                                <option value="bank_transfer">Bank Transfer</option>
-                                                <option value="cash_book">Cash Book</option>
-                                                <option value="others">Others</option>
-                                            </select>
-                                        </div>
                                     </div>
 
-                                    <div class="flex flex-col mt-4 ml-3">
-                                        <a href=""
-                                            class="bg-purple-600 px-3 py-2 text-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">Filter</a>
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="p-4 responsive">
