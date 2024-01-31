@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CashOut\CashOutController;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +48,9 @@ Route::get('/delete_cash_out/{id}', [CashOutController::class, 'delete_cash_out'
 
 //route to filter by data
 Route::get('/filter', [CashOutController::class, 'filter'])->name('filter');
+
+//Route for downloading pdf
+Route::get('/generate-pdf/{id}', [PDFController::class, 'generatePDF'])->name('pdf');
 
 
 

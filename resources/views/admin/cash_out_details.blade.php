@@ -240,7 +240,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-4">
-                                                    <a
+                                                    <a href="{{ route('pdf', $data->id) }}"
                                                         class="bg-purple-600 cursor-pointer hover:bg-blue-500 text-white rounded px-3 py-1 ">pdf</a>
                                                 </td>
                                             </tr>
