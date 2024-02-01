@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CashOut\CashOutController;
+use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,9 @@ Route::get('/filter', [CashOutController::class, 'filter'])->name('filter');
 
 //Route for downloading pdf
 Route::get('/generate-pdf/{id}', [PDFController::class, 'generatePDF'])->name('pdf');
+
+// Route to show all the records of cash-in detail
+Route::get('/cash_in_details', [ClientController::class, 'dispaly_cash_in'])->name('display_in');
 
 
 

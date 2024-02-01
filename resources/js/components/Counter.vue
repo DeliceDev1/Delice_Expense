@@ -98,7 +98,7 @@
 <template>
     <div class="bg-white-200 shadow-lg p-6 mx-4 rounded-xl">
         <form action="" class="my-2">
-            <p class="bg-purple-700 text-white text-center text-2xl mb-2 p-2 rounded-lg">CASH-IN DETAILS</p>
+            <p class="bg-purple-700 text-white text-center text-2xl mb-2 p-2 rounded-lg">CASH-IN FORM</p>
             <div class="grid grid-cols-2 gap-2">
                 <div>
                     <label for="" class="font-normal">Category</label>

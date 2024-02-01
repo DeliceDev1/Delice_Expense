@@ -68,6 +68,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('display_in') }}" class="nav-link">
+                        <p>
+                            Cash-in Details
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <p>
                             To-Do

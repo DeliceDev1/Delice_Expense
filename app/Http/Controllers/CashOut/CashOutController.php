@@ -70,7 +70,7 @@ class CashOutController extends Controller
 
         return view('admin.cash_out_details', compact('data'));
     }
-
+  
     public function edit_cash_out($id)
     {
         $edit_data = CashOutDetail::findOrFail($id);
