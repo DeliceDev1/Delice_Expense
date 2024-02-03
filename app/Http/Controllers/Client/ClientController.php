@@ -74,4 +74,11 @@ class ClientController extends Controller
         $data = ClientDetail::all();
         return view('admin.cash_in_details', compact('data'));
     }
+
+    public function getClient()
+    {
+        $data = ClientDetail::with('clientFiles')->get();
+        // $data = ClientDetail::all();
+        return response($data);
+    }
 }

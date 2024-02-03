@@ -19,12 +19,6 @@
      //for image 
      const imageInput = ref(null);
 
-    //for multiple images
-    //  const handleImageChange = (event) => {
-    //     const files = event.target.files;
-    //     console.log('Selected Files:', files);
-    //     clientDetails.images = Array.from(files);
-    // };
 
     //for single image
     const handleImageChange = (event) => {
@@ -50,7 +44,7 @@
     
     // function to create new dynamic field after clicking +
     const addClient = () => {
-    clientsFile.push({ name: '', passport: null , nationality:'', appliedCountry:''});
+        clientsFile.push({ name: '', passport: null , nationality:'', appliedCountry:''});
     };
 
 
@@ -62,10 +56,7 @@
     // function to handle form data
     const submitData = async() => {
         const formData = new FormData();
-            //for managing multiple images.
-            // clientDetails.images.forEach((image, index) => {
-            //     formData.append(`image${index + 1}`, image);
-            // });
+
 
             formData.append('image',clientDetails.image);
             formData.append('category', clientDetails.category);

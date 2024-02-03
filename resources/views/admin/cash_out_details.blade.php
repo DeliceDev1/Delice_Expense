@@ -213,10 +213,17 @@
                                                 <td class="px-6 py-4">
                                                     {{ $data->agent }}
                                                 </td>
+                                                {{-- <td class="px-6 py-4">
+                                                    <img src="{{ asset('images/' . $data->image_path) }}"
+                                                        alt="image">
+                                                </td> --}}
                                                 <td class="px-6 py-4">
                                                     {{-- <img src="{{ asset('images/' . $data->image_path) }}"
                                                         alt="image---"> --}}
-                                                    <img src="{{ asset('images/' . $data->image_path) }}"
+                                                    @php
+                                                        $baseUrl = URL::to('/');
+                                                    @endphp
+                                                    <img class="w-40 h-25" src="{{ $data->image_path }}"
                                                         alt="image">
                                                 </td>
                                                 <td class="px-6 py-4">

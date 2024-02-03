@@ -24,6 +24,6 @@ class CashOutDetail extends Model
 
     public function getImagePathAttribute($value)
     {
-        return asset('storage/' . $value);
+        return asset('images/' . $value);
     }
 }

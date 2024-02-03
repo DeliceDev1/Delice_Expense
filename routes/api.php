@@ -21,3 +21,5 @@ use App\Http\Controllers\Client\ClientController;
 // });
 
 Route::post('/store-client-data', [ClientController::class, 'store']);
+
+Route::get('/get-client-data', [ClientController::class, 'getClient']);
