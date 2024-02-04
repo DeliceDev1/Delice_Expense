@@ -211,7 +211,7 @@
         </div>
 
         <div>
-            <button @click="submitData" class="bg-purple-900 px-3 py-1 rounded text-white mt-1">create</button>
+            <button @click="submitData" class="bg-purple-900 px-3 py-1 rounded text-white mt-1 hover:bg-lime-700">create</button>
         </div>
 
        

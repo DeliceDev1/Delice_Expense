@@ -23,3 +23,7 @@ use App\Http\Controllers\Client\ClientController;
 Route::post('/store-client-data', [ClientController::class, 'store']);
 
 Route::get('/get-client-data', [ClientController::class, 'getClient']);
+
+Route::post('/update-client-data', [ClientController::class, 'updateClient']);
+
+Route::delete('/delete-client/{id}', [ClientController::class, 'deleteClient']);

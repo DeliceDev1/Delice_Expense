@@ -69,6 +69,61 @@ class ClientController extends Controller
 
     }
 
+    public function updateClient(Request $request)
+    {
+
+
+        $request->validate([
+            'category' => 'required|string',
+            'date' => 'required|date',
+            'amount' => 'required|numeric',
+            'tax' => 'required|numeric',
+            'cpn' => 'nullable|string',
+            'cpm' => 'required|numeric',
+            'received' => 'required|string',
+            'agent' => 'nullable|string',
+            'currency' => 'string',
+
+            'clientsFile.*.name' => 'required|string',
+            'clientsFile.*.passport' => 'required|string',
+            'clientsFile.*.nationality' => 'required|string',
+            'clientsFile.*.appliedCountry' => 'required|string',
+
+        ]);
+
+        $clientDetail = ClientDetail::findOrFail($request->id);
+
+        // Handle image upload for ClientDetail
+        // $imagePath = $request->file('image')->store('images'); // 'images' is the storage folder; adjust as needed
+
+        // Update client detail record in the database
+        $clientDetail->category = $request->input('category');
+        $clientDetail->date = $request->input('date');
+        $clientDetail->amount = $request->input('amount');
+        $clientDetail->tax = $request->input('tax');
+        $clientDetail->cpn = $request->input('cpn');
+        $clientDetail->cpm = $request->input('cpm');
+        $clientDetail->received = $request->input('received');
+        $clientDetail->agent = $request->input('agent');
+        $clientDetail->currency = $request->input('currency');
+        $clientDetail->save();
+
+        $oldFiles = ClientFile::where('client_detail_id', $clientDetail->id)->delete();
+
+
+        // Handle client files
+        foreach ($request->input('clientFile') as $clientFileData) {
+            $clientFile = new ClientFile($clientFileData);
+            $clientDetail->clientFiles()->save($clientFile);
+        }
+
+        Session::flash('msg', 'Data Added Succesfully');
+        // return a response indicating success
+        return response(['msg' => 'succ'], 200);
+
+    }
+
+
     public function dispaly_cash_in()
     {
         $data = ClientDetail::all();
@@ -81,4 +136,25 @@ class ClientController extends Controller
         // $data = ClientDetail::all();
         return response($data);
     }
+
+
+    public function deleteClient($id)
+    {
+        $clientDetail = ClientDetail::find($id);
+
+        if (!$clientDetail) {
+            // Handle case where client detail is not found
+            return response()->json(['message' => 'Client not found'], 404);
+        }
+
+        // Delete associated client files
+        $clientDetail->clientFiles()->delete();
+
+        // Delete client detail
+        $clientDetail->delete();
+
+        return response()->json(['message' => 'Client deleted successfully']);
+    }   
+
+
 }

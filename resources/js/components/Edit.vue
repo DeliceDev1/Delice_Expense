@@ -3,6 +3,7 @@
 
     // object to handle the static part of form
     const clientDetails = reactive({ 
+        id: null,
         category: '', 
         date: null, 
         amount: 0, 
@@ -17,7 +18,7 @@
 
 
      //for image 
-     const imageInput = ref(null);
+    const imageInput = ref(null);
 
 
     //for single image
@@ -36,7 +37,7 @@
             nationality:'',
             appliedCountry:''
         }
-        ]);
+    ]);
     
     // variable to control checkbox
     const showClient=ref(false);
@@ -44,7 +45,7 @@
     
     // function to create new dynamic field after clicking +
     const addClient = () => {
-    clientsFile.push({ name: '', passport: null , nationality:'', appliedCountry:''});
+        clientsFile.push({ name: '', passport: null , nationality:'', appliedCountry:''});
     };
 
     const all_clients = ref([]);
@@ -56,57 +57,116 @@
         clientsFile.splice(index, 1);
     }
 
-    // function to handle form data
-    const submitData = async() => {
-        const formData = new FormData();
-            formData.append('image',clientDetails.image);
-            formData.append('category', clientDetails.category);
-            formData.append('date', clientDetails.date);
-            formData.append('amount', clientDetails.amount);
-            formData.append('tax', clientDetails.tax);
-            formData.append('agent', clientDetails.agent);
-            formData.append('cpm', clientDetails.cpm);
-            formData.append('cpn', clientDetails.cpn);
-            formData.append('received', clientDetails.received);
-            formData.append('currency', clientDetails.currency);
-
-            clientsFile.forEach((client, index) => {
-                formData.append(`clientFile[${index}][name]`, client.name);
-                formData.append(`clientFile[${index}][passport]`, client.passport);
-                formData.append(`clientFile[${index}][nationality]`, client.nationality);
-                formData.append(`clientFile[${index}][appliedCountry]`, client.appliedCountry);
-            });
-
-            const data = await axios.post('/api/store-client-data', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        isFormVisible.value = false;
-           
+    const loadData = async() => {
+        const data = await axios.get('/api/get-client-data');
+        all_clients.value = data.data;
     }
 
-    onMounted(async() => {
-                    const data = await axios.get('/api/get-client-data');
-                    all_clients.value = data.data;
-             });
+
+    onMounted(() => {
+        loadData();
+    });
     
 
     let count = all_clients.length;
 
     const isFormVisible = ref(false);
 
-    const toggleFormVisibility = () => {
-        isFormVisible.value = !isFormVisible.value;
+    // function to edit 
+    const editClient = (data) =>{
+        isFormVisible.value = true;
+
+        clientDetails.id =  data.id;
+        clientDetails.category = data.category; 
+        clientDetails.date =  data.date; 
+        clientDetails.amount =  data.amount; 
+        clientDetails.tax =  data.tax; 
+        clientDetails.cpn =  data.cpn; 
+        clientDetails.cpm =  data.cpm; 
+        clientDetails.received =  data.received; 
+        clientDetails.agent =  data.agent;
+        clientDetails.image =  null;
+
+        if(data.client_files.length){
+            showClient.value = true;
+            const mappedArray = data.client_files.map(el=>{
+                return {
+                    name: el.name,
+                    passport: el.passport ,
+                    nationality: el.nationality,
+                    appliedCountry: el.appliedCountry,
+                }
+            });
+            clientsFile.splice(0, clientsFile.length, ...mappedArray);
+        }
+
+    }
+
+
+    const updateData = async () => {
+        const formData = new FormData();
+        formData.append('id', clientDetails.id);
+        formData.append('category', clientDetails.category);
+        formData.append('date', clientDetails.date);
+        formData.append('amount', clientDetails.amount);
+        formData.append('tax', clientDetails.tax);
+        formData.append('agent', clientDetails.agent);
+        formData.append('cpm', clientDetails.cpm);
+        formData.append('cpn', clientDetails.cpn);
+        formData.append('received', clientDetails.received);
+        formData.append('currency', clientDetails.currency);
+        formData.append('image', clientDetails.image);
+
+        clientsFile.forEach((client, index) => {
+            formData.append(`clientFile[${index}][name]`, client.name);
+            formData.append(`clientFile[${index}][passport]`, client.passport);
+            formData.append(`clientFile[${index}][nationality]`, client.nationality);
+            formData.append(`clientFile[${index}][appliedCountry]`, client.appliedCountry);
+        });
+
+        
+        
+        try {
+            const data = await axios.post('/api/update-client-data', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+            loadData();
+            isFormVisible.value = false;
+        } 
+        catch (error) {
+            
+        }
+    }
+  
+  
+    // function for removing client
+    const deleteClient = async (clientDetailId, index) => {
+        console.log(clientDetailId)
+        if (clientDetailId) {
+            try {
+                // Send a request to the server to delete the client detail and associated files
+                await axios.delete(`/api/delete-client/${clientDetailId}`);
+            } catch (error) {
+                console.error('Error deleting client:', error);
+                // Handle error as needed
+            }
+        }
+
+        // Remove the client from the clientsFile array
+        clientsFile.splice(index, 1);
     };
+
+
+
 
 </script>
 
 <template>
 
     <div class="bg-white-200 shadow-lg p-6 mx-4 rounded-xl">
-        <div v-if="isFormVisible" @submit.prevent="submitData" >
+        <div v-if="isFormVisible">
             <form  action="" class="my-2">
                 
                 <p class="bg-purple-700 text-white text-center text-2xl mb-2 p-2 rounded-lg">CASH-IN FORM</p>
@@ -224,7 +284,7 @@
                                 <div>
                                     <button 
                                     class="text-2xl p-2"
-                                    @click="addClient">+</button>
+                                    @click.prevent="addClient">+</button>
                                     
                                 </div>
                         </div>
@@ -234,7 +294,7 @@
                 </div>
             </form>
             <div>
-                    <button @click="submitData" class="bg-purple-900 px-3 py-1 rounded text-white mt-1">create</button>
+                    <button @click.prevent="updateData" class="bg-purple-900 px-3 py-1 rounded text-white mt-1">Update</button>
             </div>
         </div>
        
@@ -245,7 +305,7 @@
                 <div class="flex items-center justify-end text-white">
                     <!-- Date Range Picker -->
                     <div class="flex items-center space-x-4">
-                        <form action="" @submit.prevent="submitData" class="flex flex-normal space-x-4">
+                        <form action="" @submit.prevent="searchData" class="flex flex-normal space-x-4">
                             <div class="flex flex-col">
                                 <label for="searchByName"
                                     class="block text-sm font-medium text-gray-600">Search_By_Agent</label>
@@ -407,23 +467,22 @@
                                 {{ data.agent }}
                             </td>
                             <td class="px-6 py-4">
-                                <a href=""
-                                    class="bg-purple-600 text-white rounded-sm px-2 py-1">files{{ count }}</a>
+                                <div href=""
+                                    class="bg-purple-600 text-white rounded-sm px-2 py-1">files({{data.client_files.length}})</div>
                             </td>
                             <td class="px-6 py-4">
-                                image
-                                <img :src="data.image_path" alt="image">
+                                <img :src="'/'+data.image_path" alt="image" class="w-50 h-50">
                             </td>
                             <td class="px-6 py-4">
-                                <div class="flex">
+                                <div class="flex items-center justify-center">
                                     <div class="mr-2">
-                                        <a href="" @click.prevent="toggleFormVisibility"
-                                            class="items-center justify-center text-blue rounded-lg text-lg p-1 hover:bg-blue-200">
+                                        <div href="" @click.prevent="editClient(data)"
+                                            class="items-center justify-center cursor-pointer text-blue rounded-lg text-lg p-1 hover:bg-blue-200">
                                             <i class="fas fa-edit"></i>
-                                        </a>
+                                        </div>
                                     </div>
                                     <div>
-                                        <a href="#"
+                                        <a href="#" @click.prevent="deleteClient(data.id, index)"
                                             class=" items-center justify-center text-red text-lg rounded-lg p-1 hover:bg-red-200"><i
                                                 class="fas fa-trash-alt"></i>
                                         </a>
@@ -431,7 +490,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <a href="#"
+                                <a href="#" @click.prevent="removeClient(data.id, index)"
                                     class="bg-purple-600 cursor-pointer hover:bg-blue-500 text-white rounded px-3 py-1 ">pdf</a>
                             </td>
                         </tr>
