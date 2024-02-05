@@ -70,7 +70,7 @@ class CashOutController extends Controller
 
         return view('admin.cash_out_details', compact('data'));
     }
-  
+
     public function edit_cash_out($id)
     {
         $edit_data = CashOutDetail::findOrFail($id);
@@ -107,6 +107,7 @@ class CashOutController extends Controller
         } else {
             $imageName = $update_data->image_path;
         }
+
 
 
         CashOutDetail::where('id', $id)->update([

@@ -75,6 +75,21 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('category-in') }}" class="nav-link">
+                        <p>
+                            Add Cash-In Catetory
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('category-out') }}" class="nav-link">
+                        <p>
+                            Add Cash-Out Catetory
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <p>
                             To-Do

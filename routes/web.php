@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CashOut\CashOutController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
@@ -55,6 +56,10 @@ Route::get('/generate-pdf/{id}', [PDFController::class, 'generatePDF'])->name('p
 
 // Route to show all the records of cash-in detail
 Route::get('/cash_in_details', [ClientController::class, 'dispaly_cash_in'])->name('display_in');
+
+Route::get('/add_category_in', [CategoryController::class, 'add_category_in'])->name('category-in');
+
+Route::get('/add_category_out', [CategoryController::class, 'add_category_out'])->name('category-out');
 
 
 

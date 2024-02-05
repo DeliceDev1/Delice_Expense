@@ -154,7 +154,50 @@ class ClientController extends Controller
         $clientDetail->delete();
 
         return response()->json(['message' => 'Client deleted successfully']);
-    }   
+    }
 
+
+  
+
+    public function searchData(Request $request)
+    {
+        // Get values from input fields
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $category = $request->input('category');
+        $received = $request->input('received');
+        $number = $request->input('cpm');
+        $name = $request->input('cpn');
+        $agent = $request->input('agent');
+
+        //Query to filter data based on inputs
+        $data = ClientDetail::query()
+            ->when($startDate, function ($query) use ($startDate) {
+                $query->where('date', '>=', $startDate);
+            })
+            ->when($endDate, function ($query) use ($endDate) {
+                $query->where('date', '<=', $endDate);
+            })
+            ->when($category, function ($query) use ($category) {
+                $query->where('category', $category);
+            })
+            ->when($received, function ($query) use ($received) {
+                $query->where('received', $received);
+            })
+            ->when($number, function ($query) use ($number) {
+                $query->where('cpm', $number);
+            })
+            ->when($name, function ($query) use ($name) {
+                $query->where('cpn', $name);
+            })
+            ->when($agent, function ($query) use ($agent) {
+                $query->where('agent', $agent);
+            })
+            ->get();
+
+
+
+        return response($data);
+    }
 
 }

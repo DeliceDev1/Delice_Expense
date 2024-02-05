@@ -16,10 +16,8 @@
         image: null
      });
 
-
      //for image 
     const imageInput = ref(null);
-
 
     //for single image
     const handleImageChange = (event) => {
@@ -28,7 +26,6 @@
         clientDetails.image = file;
     };
  
-
     // array of object to handle the dynamic form data 
     const clientsFile = reactive([
         {
@@ -49,7 +46,6 @@
     };
 
     const all_clients = ref([]);
-    
 
 
     // function to remove dynamic form
@@ -61,7 +57,6 @@
         const data = await axios.get('/api/get-client-data');
         all_clients.value = data.data;
     }
-
 
     onMounted(() => {
         loadData();
@@ -102,7 +97,6 @@
 
     }
 
-
     const updateData = async () => {
         const formData = new FormData();
         formData.append('id', clientDetails.id);
@@ -140,7 +134,6 @@
         }
     }
   
-  
     // function for removing client
     const deleteClient = async (clientDetailId, index) => {
         console.log(clientDetailId)
@@ -157,6 +150,34 @@
         // Remove the client from the clientsFile array
         clientsFile.splice(index, 1);
     };
+    
+
+    // const filteredData = ref([]);
+
+    
+    // function for filtering data.
+    const start_date = ref();
+    const end_date = ref();
+    const searchData = async () => {
+    try {
+      const response = await axios.post('/api/search-data', {
+        agent: clientDetails.agent,
+        cpn: clientDetails.cpn,
+        cpm: clientDetails.cpm,
+        start_date: start_date.value,
+        end_date: end_date.value,
+        category: clientDetails.category,
+        received: clientDetails.received,
+      });
+      all_clients.value = response.data;
+      // Handle the response from the server 
+      console.log('Search results:', response.data);
+    } catch (error) {
+      console.error('Error searching data:', error);
+      // Handle errors as needed
+    }
+  };
+
 
 
 
@@ -309,21 +330,21 @@
                             <div class="flex flex-col">
                                 <label for="searchByName"
                                     class="block text-sm font-medium text-gray-600">Search_By_Agent</label>
-                                <input type="text" id="agent" name="agent"
+                                <input type="text" id="agent" name="agent" v-model="clientDetails.agent"
                                     placeholder="Enter agent name"
                                     class="w-full h-10 text-black px-15 border border-purple-600 rounded-md focus:outline-none focus:ring focus:border-blue-300">
                             </div>
                             <div class="flex flex-col">
                                 <label for="searchByName"
                                     class="block text-sm font-medium text-gray-600">Search_By_Name</label>
-                                <input type="text" id="pbn" name="pbn"
+                                <input type="text" id="pbn" name="cpn" v-model="clientDetails.cpn"
                                     placeholder="Enter name"
                                     class="w-full h-10 text-black px-15 border border-purple-600 rounded-md focus:outline-none focus:ring focus:border-blue-300">
                             </div>
                             <div class="flex flex-col">
                                 <label for="searchByName"
                                     class="block text-sm font-medium text-gray-600">Search_By_Number</label>
-                                <input type="number" id="pbm" name="pbm"
+                                <input type="number" id="pbm" name="cpm" v-model="clientDetails.cpm"
                                     placeholder="Enter mobile number"
                                     class="w-full h-10 text-black px-15 border border-purple-600 rounded-md focus:outline-none focus:ring focus:border-blue-300">
                             </div>
@@ -331,7 +352,7 @@
                                 <label for="startDate"
                                     class="block text-sm font-medium text-gray-600">Start
                                     Date</label>
-                                <input type="date" id="startDate" name="start_date"
+                                <input type="date" id="startDate" name="start_date" v-model="start_date"
                                     class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
                             </div>
 
@@ -339,7 +360,7 @@
                                 <label for="endDate"
                                     class="block text-sm font-medium text-gray-600">End
                                     Date</label>
-                                <input type="date" id="endDate" name="end_date"
+                                <input type="date" id="endDate" name="end_date" v-model="end_date"
                                     class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
                             </div>
 
@@ -348,7 +369,7 @@
                             <div class="flex flex-col">
                                 <label for="category"
                                     class="block text-sm font-medium text-gray-600">Category</label>
-                                <select id="category" name="category"
+                                <select id="category" name="category" v-model="clientDetails.category"
                                     class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
                                     <option value="">__select an option__</option>
                                     <option value="category-1">category-1</option>
@@ -362,7 +383,7 @@
                             <div class="flex flex-col">
                                 <label for="category"
                                     class="block text-sm font-medium text-gray-600">Payment Mode</label>
-                                <select id="category" name="payment_mode"
+                                <select id="category" name="payment_mode" v-model="clientDetails.received"
                                     class="w-full h-10 text-black px-15 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
                                     <option value="">__select an option__</option>
                                     <option value="cash">Cash</option>
@@ -490,7 +511,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <a href="#" @click.prevent="removeClient(data.id, index)"
+                                <a href="#" 
                                     class="bg-purple-600 cursor-pointer hover:bg-blue-500 text-white rounded px-3 py-1 ">pdf</a>
                             </td>
                         </tr>

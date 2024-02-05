@@ -153,7 +153,7 @@
                                         <div>
                                             <label for="">Tax</label>
                                             <input type="number" name="tax" id=""
-                                                placeholder="Enter tax amount" value="{{ $edit_data->pbm }}"
+                                                placeholder="Enter tax amount" value="{{ $edit_data->tax }}"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
@@ -168,7 +168,11 @@
                                             <label for="">Images</label>
                                             {{-- <img src="{{ asset('images/' . $edit_data->image_path) }}" alt="edit_image"
                                                 class="w-40 h-40 bg-purple-300"> --}}
-                                            <img class="w-40 h-40" src="{{ $edit_data->image_path }}" alt="image">
+                                            {{-- <img class="w-40 h-40" src="{{ $edit_data->image_path }}" alt="image"> --}}
+                                            @php
+                                                $baseUrl = URL::to('/');
+                                            @endphp
+                                            <img class="w-40 h-25" src="{{ $edit_data->image_path }}" alt="image">
                                             <input type="file" name="image" id=""
                                                 class="w-full border border-gray-300 rounded-lg p-1 bg-white">
                                         </div>
