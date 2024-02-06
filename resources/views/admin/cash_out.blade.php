@@ -56,13 +56,18 @@
                                             <label for="">Category</label>
                                             <select name="category" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
-                                                <option value="">--select an option--</option>
+                                                {{-- <option value="">--select an option--</option>
                                                 <option value="category-1">category-1</option>
                                                 <option value="category-2">category-2</option>
                                                 <option value="category-3">category-3</option>
                                                 <option value="category-4">category-4</option>
                                                 <option value="category-3">category-5</option>
-                                                <option value="category-6">category-6</option>
+                                                <option value="category-6">category-6</option> 
+                                              --}}
+
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category }}">{{ $category }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 
@@ -162,7 +167,7 @@
 
     @vite('resources/js/app.js')
 
-  
+
 
 
 

@@ -189,4 +189,41 @@ class CashOutController extends Controller
 
 
     }
+
+    //code for adding category
+
+    public function show_category_in()
+    {
+
+        return view('admin.add_category_in');
+    }
+
+    public function show_category_out()
+    {
+
+        return view('admin.add_category_out');
+    }
+
+    public function add_category_cash_out(Request $request)
+    {
+
+        $newCategory = $request->input('newCategory');
+
+
+
+        $request->validate([
+            'newCategory' => 'required|string|max:255|unique:cash_out_details,category',
+        ]);
+
+        $category = CashOutDetail::create([
+            'category' => $newCategory,
+        ]);
+        
+
+        // Create a new category and save it to the database
+        $categories = CashOutDetail::pluck('category')->unique();
+
+        return view('your.blade.view', compact('categories'));
+    }
+
 }

@@ -64,6 +64,7 @@
     
 
     let count = all_clients.length;
+    
 
     const isFormVisible = ref(false);
 
@@ -169,19 +170,15 @@
         category: clientDetails.category,
         received: clientDetails.received,
       });
+      
       all_clients.value = response.data;
       // Handle the response from the server 
-      console.log('Search results:', response.data);
+    //   console.log('Search results:', response.data);
     } catch (error) {
       console.error('Error searching data:', error);
       // Handle errors as needed
     }
   };
-
-
-
-
-
 </script>
 
 <template>

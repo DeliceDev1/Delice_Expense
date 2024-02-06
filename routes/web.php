@@ -5,6 +5,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
+use App\Models\AddCashInCategory;
+use App\Models\AddCashOutCategory;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,13 +27,15 @@ Route::get('/', function () {
 
 // route for cash-in
 Route::get('/cash_in', function () {
+    // $categories = AddCashInCategory::pluck('category')->unique();
     return view('admin.cash_in');
-});
+})->name('display');
 
 // route for cash-out layout
 Route::get('/cash_out', function () {
-    return view('admin.cash_out');
-});
+    $categories = AddCashOutCategory::pluck('category')->unique();
+    return view('admin.cash_out', compact('categories'));
+})->name('admin.cash_out');
 
 // route for inserting post data
 Route::post('/cash_out_form_data', [CashOutController::class, 'store_cash_out_data'])->name('form_out');
@@ -57,10 +61,13 @@ Route::get('/generate-pdf/{id}', [PDFController::class, 'generatePDF'])->name('p
 // Route to show all the records of cash-in detail
 Route::get('/cash_in_details', [ClientController::class, 'dispaly_cash_in'])->name('display_in');
 
-Route::get('/add_category_in', [CategoryController::class, 'add_category_in'])->name('category-in');
+Route::get('/add_category_in', [CategoryController::class, 'show_category_in'])->name('category-in');
 
-Route::get('/add_category_out', [CategoryController::class, 'add_category_out'])->name('category-out');
+Route::get('/add_category_out', [CategoryController::class, 'show_category_out'])->name('category-out');
 
+Route::post('/show_added_category_out', [CategoryController::class, 'add_category_cash_out'])->name('show_added_category');
+
+Route::post('/add_cash_in_category', [CategoryController::class, 'add_cash_in_category'])->name('add_cash_in_category');
 
 
 

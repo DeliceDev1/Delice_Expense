@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\ClientController;
@@ -29,3 +30,5 @@ Route::post('/update-client-data', [ClientController::class, 'updateClient']);
 Route::delete('/delete-client/{id}', [ClientController::class, 'deleteClient']);
 
 Route::post('/search-data', [ClientController::class, 'searchData']);
+
+Route::get('/get-category-data', [CategoryController::class, 'getCategories']);

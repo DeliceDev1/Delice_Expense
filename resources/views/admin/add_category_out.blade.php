@@ -29,19 +29,20 @@
                 <div class="container-fluid">
                     <div class="mb-2">
                         <div class="col-md-4 mx-auto">
-                            <h4 class="text-center mb-2">ADD CASH-IN CATEGORY </h4>
+                            <h4 class="text-center mb-2">ADD CASH-OUT CATEGORY </h4>
                             <div>
                                 @if (session('success'))
                                     <div class="alert alert-success">
                                         {{ session('success') }}
                                     </div>
                                 @endif
-                                <form action="{{ route('add_cash_in_category') }}" method="post">
+
+                                <form action="{{ route('show_added_category') }}" method="POST">
                                     @csrf
-                                    <input type="text" name="newCategoryIn" id=""
+                                    <input type="text" name="newCategory" id=""
                                         class="bg-gray-300 rounded-md w-full mb-2">
                                     <button type="submit" class="bg-red-600 rounded-md text-white px-4 py-2">add
-                                        cash-in category</button>
+                                        cash-out category</button>
                                 </form>
 
                             </div>

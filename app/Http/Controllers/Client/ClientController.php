@@ -157,7 +157,7 @@ class ClientController extends Controller
     }
 
 
-  
+
 
     public function searchData(Request $request)
     {
@@ -193,6 +193,7 @@ class ClientController extends Controller
             ->when($agent, function ($query) use ($agent) {
                 $query->where('agent', $agent);
             })
+            ->with('clientFiles')
             ->get();
 
 
