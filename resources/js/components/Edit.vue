@@ -179,6 +179,32 @@
       // Handle errors as needed
     }
   };
+
+
+        const getPdf = async (pdfId) => {
+            console.log(pdfId);
+            if (pdfId) {
+                try {
+                    const response = await axios.post(`/api/get-pdf/${pdfId}`, null, { responseType: 'blob' });
+
+                    const blob = new Blob([response.data], { type: 'application/pdf' });
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = `client_${pdfId}_pdf.pdf`;
+
+                    // Append the link to the document body
+                    document.body.appendChild(link);
+
+                    // Trigger the click event
+                    link.click();
+
+                    // Remove the link from the document body after the click event
+                    document.body.removeChild(link);
+                } catch (error) {
+                    console.error('Error generating PDF:', error);
+                }
+            }
+        };
 </script>
 
 <template>
@@ -489,7 +515,7 @@
                                     class="bg-purple-600 text-white rounded-sm px-2 py-1">files({{data.client_files.length}})</div>
                             </td>
                             <td class="px-6 py-4">
-                                <img :src="'/'+data.image_path" alt="image" class="w-50 h-50">
+                                <img :src="'/' + data.image_path" alt="image" class="w-40 h-30">
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-center">
@@ -508,7 +534,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <a href="#" 
+                                <a href="#"  @click.prevent="getPdf(data.id)"
                                     class="bg-purple-600 cursor-pointer hover:bg-blue-500 text-white rounded px-3 py-1 ">pdf</a>
                             </td>
                         </tr>

@@ -58,7 +58,6 @@
         const formData = new FormData();
 
 
-            formData.append('image',clientDetails.image);
             formData.append('category', clientDetails.category);
             formData.append('date', clientDetails.date);
             formData.append('amount', clientDetails.amount);
@@ -69,12 +68,18 @@
             formData.append('received', clientDetails.received);
             formData.append('currency', clientDetails.currency);
 
-            clientsFile.forEach((client, index) => {
-                formData.append(`clientFile[${index}][name]`, client.name);
-                formData.append(`clientFile[${index}][passport]`, client.passport);
-                formData.append(`clientFile[${index}][nationality]`, client.nationality);
-                formData.append(`clientFile[${index}][appliedCountry]`, client.appliedCountry);
-            });
+            if(clientDetails.image){
+                formData.append('image',clientDetails.image);
+            }
+
+            if(showClient.value){
+                clientsFile.forEach((client, index) => {
+                    formData.append(`clientFile[${index}][name]`, client.name);
+                    formData.append(`clientFile[${index}][passport]`, client.passport);
+                    formData.append(`clientFile[${index}][nationality]`, client.nationality);
+                    formData.append(`clientFile[${index}][appliedCountry]`, client.appliedCountry);
+                });
+            }
 
 
         const data = await axios.post('/api/store-client-data', formData, {
@@ -108,7 +113,7 @@
                         <option value="">--Choose a category-- </option>
                         <option value="category-1">category-1</option>
                     </select> -->
-                    <select name="cars" id="cars" v-model="clientDetails.category" class="w-full border border-gray-300 rounded-xl">
+                    <select name="category" id="category" v-model="clientDetails.category" class="w-full border border-gray-300 rounded-xl">
                         <option value="">--Choose a category--</option>
                         <option v-for="category in categories" :key="category.id" :value="category.category">
                             {{ category.category }}
@@ -163,7 +168,7 @@
                 </div>
                 <div>
                     <label for="">Images</label>
-                    <input type="file" ref="imageInput" @change="handleImageChange" name="image" id="" class="w-full border border-gray-300 rounded-lg p-1 bg-white">
+                    <input type="file" ref="imageInput" @change="handleImageChange" name="image" id="" accept="image/*" class="w-full border border-gray-300 rounded-lg p-1 bg-white">
                 </div>
             </div>
         </form>

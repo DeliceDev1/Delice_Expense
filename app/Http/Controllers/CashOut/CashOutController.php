@@ -97,9 +97,11 @@ class CashOutController extends Controller
         ]);
 
         $imageName = "";
+
         $deleteOldImage = 'images/' . $update_data->image_path;
+
         if ($image_path = $request->file('image_path')) {
-            if (file_exists($deleteOldImage)) {
+            if (File::exists($deleteOldImage)) {
                 File::delete($deleteOldImage);
             }
             $imageName = time() . '-' . uniqid() . '.' . $image_path->getClientOriginalExtension();
@@ -218,7 +220,7 @@ class CashOutController extends Controller
         $category = CashOutDetail::create([
             'category' => $newCategory,
         ]);
-        
+
 
         // Create a new category and save it to the database
         $categories = CashOutDetail::pluck('category')->unique();

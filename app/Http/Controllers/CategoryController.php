@@ -29,8 +29,6 @@ class CategoryController extends Controller
 
         $newCategoryIn = $request->input('newCategoryIn');
 
-        // The dd() line should be placed here if you want to check the input before proceeding.
-
         $category = AddCashInCategory::create([
             'category' => $newCategoryIn,
         ]);
