@@ -1,5 +1,6 @@
 <script setup>
     import { ref, reactive, onMounted } from 'vue';
+    import axios from 'axios';
 
     // object to handle the static part of form
     const clientDetails = reactive({ 
@@ -87,6 +88,13 @@
             'Content-Type': 'multipart/form-data',
           },
         });
+
+        if (data.status === 200) {
+      showNotification('Data submitted successfully', 'success');
+    } else {
+      showNotification('Error submitting data', 'error');
+    }
+        
     }
 
     const categories = ref([]);
@@ -99,6 +107,7 @@
             console.error('Error fetching categories:', error);
         }
     });
+
 </script>
 
 <template>
@@ -108,11 +117,6 @@
             <div class="grid grid-cols-2 gap-2">
                 <div>
                     <label for="" class="font-normal">Category</label>
-                    <!-- <select name="cars" id="cars" v-model="clientDetails.category"
-                        class="w-full border border-gray-300 rounded-xl">
-                        <option value="">--Choose a category-- </option>
-                        <option value="category-1">category-1</option>
-                    </select> -->
                     <select name="category" id="category" v-model="clientDetails.category" class="w-full border border-gray-300 rounded-xl">
                         <option value="">--Choose a category--</option>
                         <option v-for="category in categories" :key="category.id" :value="category.category">

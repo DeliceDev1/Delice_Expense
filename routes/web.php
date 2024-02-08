@@ -69,6 +69,12 @@ Route::post('/show_added_category_out', [CategoryController::class, 'add_categor
 
 Route::post('/add_cash_in_category', [CategoryController::class, 'add_cash_in_category'])->name('add_cash_in_category');
 
+//Route to export cashoutdetail
+Route::get('/export-cash-out', [CashOutController::class, 'export'])->name('export.cash.out');
+
+//route to export clientDetail.
+Route::get('/export-clients', [ClientController::class, 'exportClients'])->name('export.clients');
+
 
 
 Route::get('/dashboard', function () {

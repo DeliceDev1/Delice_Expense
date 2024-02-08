@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Client;
 
+
+use App\Exports\CashOutDetailExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use App\Models\ClientDetail;
 use App\Models\ClientFile;
 use Illuminate\Http\Request;
+use App\Exports\ClientExport;
 use Session;
 
 class ClientController extends Controller
@@ -70,7 +74,7 @@ class ClientController extends Controller
             }
         }
 
-        Session::flash('msg', 'Data Added Succesfully');
+        // Session::flash('msg', 'Data Added Succesfully');
         // return a response indicating success
         return response(['msg' => 'success'], 200);
 
@@ -162,7 +166,7 @@ class ClientController extends Controller
         // Delete client detail
         $clientDetail->delete();
 
-        return redirect()->back();
+        // return redirect()->back();
 
         return response()->json(['message' => 'Client deleted successfully']);
     }
@@ -210,6 +214,12 @@ class ClientController extends Controller
 
 
         return response($data);
+    }
+
+
+    public function exportClients()
+    {
+        return Excel::download(new ClientExport, 'clients.xlsx');
     }
 
 

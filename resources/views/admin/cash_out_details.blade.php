@@ -117,11 +117,14 @@
                                                     <option value="others">Others</option>
                                                 </select>
                                             </div>
-                                            <div class="flex flex-col mt-4 ml-3">
+                                            <div class="flex items-center gap-1 mt-4 ml-3">
 
                                                 <button type="submit"
                                                     class="bg-purple-600 px-3 py-2 text-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">Filter
                                                 </button>
+
+                                                <a href="{{ route('export.cash.out') }}"
+                                                    class="bg-green-600 px-3 py-2 rounded-md ">export</a>
                                             </div>
                                         </form>
                                     </div>
@@ -213,18 +216,15 @@
                                                 <td class="px-6 py-4">
                                                     {{ $data->agent }}
                                                 </td>
-                                                {{-- <td class="px-6 py-4">
-                                                    <img src="{{ asset('images/' . $data->image_path) }}"
-                                                        alt="image">
-                                                </td> --}}
+
                                                 <td class="px-6 py-4">
-                                                    {{-- <img src="{{ asset('images/' . $data->image_path) }}"
-                                                        alt="image---"> --}}
+
                                                     @php
                                                         $baseUrl = URL::to('/');
                                                     @endphp
-                                                    <img class="w-40 h-25" src="{{ $data->image_path }}"
+                                                    <img class="w-40 h-30" src="{{ $data->image_path }}"
                                                         alt="image">
+
                                                 </td>
                                                 <td class="px-6 py-4">
                                                     <div class="flex">
@@ -235,10 +235,6 @@
                                                             </a>
                                                         </div>
                                                         <div>
-                                                            {{-- <button
-                                                                class=" items-center justify-center text-red text-lg rounded-lg p-1 hover:bg-red-200">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </button> --}}
                                                             <a href="{{ route('delete_out', $data->id) }}"
                                                                 class=" items-center justify-center text-red text-lg rounded-lg p-1 hover:bg-red-200"><i
                                                                     class="fas fa-trash-alt"></i>

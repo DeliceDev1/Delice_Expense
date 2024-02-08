@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\CashOut;
 
+use App\Exports\CashOutDetailExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use App\Models\CashOutDetail;
 use Illuminate\Http\Request;
@@ -26,9 +28,14 @@ class CashOutController extends Controller
         ]);
 
         $imageName = "";
+        // if ($image_path = $request->file('image_path')) {
+        //     $imageName = time() . '-' . uniqid() . '.' . $image_path->getClientOriginalExtension();
+        //     $image_path->move('images/', $imageName);
+        // } 
+
         if ($image_path = $request->file('image_path')) {
             $imageName = time() . '-' . uniqid() . '.' . $image_path->getClientOriginalExtension();
-            $image_path->move('images/', $imageName);
+            $image_path->move(public_path('images/'), $imageName);
         }
 
 
@@ -45,17 +52,6 @@ class CashOutController extends Controller
             'agent' => $request->agent,
             'image_path' => $imageName,
         ]);
-
-
-        // if ($request->hasFile('image_path')) {
-        //     $image = $request->file('image');
-        //     // $imageName = 'custom_image_name.' . $image->getClientOriginalExtension();
-        //     $imageName = time() . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-        //     // $imagePath = $image->storeAs('images', $imageName, 'public');
-        //     $image->move('images/', $imageName);
-        //     $cashOutDetail->image_path = $imageName;
-        // } 
-
 
 
         $cashOutDetail->save();
@@ -81,6 +77,7 @@ class CashOutController extends Controller
 
     public function update_cash_out($id, Request $request)
     {
+
         $update_data = CashOutDetail::findOrFail($id);
 
         $request->validate([
@@ -96,25 +93,43 @@ class CashOutController extends Controller
             'image_path' => 'nullable|mimes:jpeg,png,jpg,gif,pdf|max:10240',
         ]);
 
+        // $imageName = "";
+
+        // $deleteOldImage = 'images/' . $update_data->image_path;
+
+        // if ($image_path = $request->file('image_path')) {
+        //     if (File::exists($deleteOldImage)) {
+        //         File::delete($deleteOldImage);
+        //     }
+        //     $imageName = time() . '-' . uniqid() . '.' . $image_path->getClientOriginalExtension();
+        //     $image_path->move(public_path('images/'), $imageName);
+        // } else {
+        //     $imageName = $update_data->image_path;
+        // }
+
         $imageName = "";
 
         $deleteOldImage = 'images/' . $update_data->image_path;
 
         if ($image_path = $request->file('image_path')) {
+            // If a new image is provided in the request
             if (File::exists($deleteOldImage)) {
+                // Delete the old image if it exists
                 File::delete($deleteOldImage);
             }
+
+            // Generate a unique name for the new image
             $imageName = time() . '-' . uniqid() . '.' . $image_path->getClientOriginalExtension();
-            $image_path->move('images/', $imageName);
+
+            // Move the new image to the "images/" directory
+            $image_path->move(public_path('images/'), $imageName);
         } else {
+            // If no new image is provided, use the old image path
             $imageName = $update_data->image_path;
         }
 
 
-
         CashOutDetail::where('id', $id)->update([
-
-
             'category' => $request->category,
             'date' => $request->date,
             'amount' => $request->amount,
@@ -125,14 +140,13 @@ class CashOutController extends Controller
             'tax' => $request->tax,
             'agent' => $request->agent,
             'image_path' => $imageName,
-
         ]);
 
 
 
         Session::flash('msg', 'Data Updated Succesfuly');
-        // return redirect()->back();
-        return redirect()->route('display_out');
+        return redirect()->back();
+        // return redirect()->route('display_out');
     }
 
     public function delete_cash_out($id)
@@ -226,6 +240,13 @@ class CashOutController extends Controller
         $categories = CashOutDetail::pluck('category')->unique();
 
         return view('your.blade.view', compact('categories'));
+    }
+
+
+
+    public function export()
+    {
+        return Excel::download(new CashOutDetailExport, 'cash_out_details.xlsx');
     }
 
 }

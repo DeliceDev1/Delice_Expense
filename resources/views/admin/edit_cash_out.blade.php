@@ -57,16 +57,6 @@
                                     <div class="grid grid-cols-2 gap-2">
                                         <div>
                                             <label for="">Category</label>
-                                            {{-- <select name="category" id="" value="{{ $edit_data->category }}"
-                                                class="w-full border border-gray-300 rounded-xl">
-                                                <option value="">--select an option--</option>
-                                                <option value="category-1">category-1</option>
-                                                <option value="category-2">category-2</option>
-                                                <option value="category-3">category-3</option>
-                                                <option value="category-4">category-4</option>
-                                                <option value="category-3">category-5</option>
-                                                <option value="category-6">category-6</option>
-                                            </select> --}}
 
                                             <select name="category" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
@@ -166,14 +156,11 @@
 
                                         <div>
                                             <label for="">Images</label>
-                                            {{-- <img src="{{ asset('images/' . $edit_data->image_path) }}" alt="edit_image"
-                                                class="w-40 h-40 bg-purple-300"> --}}
-                                            {{-- <img class="w-40 h-40" src="{{ $edit_data->image_path }}" alt="image"> --}}
                                             @php
                                                 $baseUrl = URL::to('/');
                                             @endphp
                                             <img class="w-40 h-25" src="{{ $edit_data->image_path }}" alt="image">
-                                            <input type="file" name="image" id=""
+                                            <input type="file" name="image_path" id=""
                                                 class="w-full border border-gray-300 rounded-lg p-1 bg-white">
                                         </div>
 

@@ -1,5 +1,7 @@
 <script setup>
     import { ref, reactive, onMounted } from 'vue';
+    // import { useToast } from 'vue-toastification';
+    // import 'vue-toastification/dist/index.css';
 
     // object to handle the static part of form
     const clientDetails = reactive({ 
@@ -181,30 +183,39 @@
   };
 
 
-        const getPdf = async (pdfId) => {
-            console.log(pdfId);
-            if (pdfId) {
-                try {
-                    const response = await axios.post(`/api/get-pdf/${pdfId}`, null, { responseType: 'blob' });
+    const getPdf = async (pdfId) => {
+        console.log(pdfId);
+        if (pdfId) {
+            try {
+                const response = await axios.post(`/api/get-pdf/${pdfId}`, null, { responseType: 'blob' });
 
-                    const blob = new Blob([response.data], { type: 'application/pdf' });
-                    const link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = `client_${pdfId}_pdf.pdf`;
+                const blob = new Blob([response.data], { type: 'application/pdf' });
+                const link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = `client_${pdfId}_pdf.pdf`;
 
-                    // Append the link to the document body
-                    document.body.appendChild(link);
+                // Append the link to the document body
+                document.body.appendChild(link);
 
-                    // Trigger the click event
-                    link.click();
+                // Trigger the click event
+                link.click();
 
-                    // Remove the link from the document body after the click event
-                    document.body.removeChild(link);
-                } catch (error) {
-                    console.error('Error generating PDF:', error);
-                }
+                // Remove the link from the document body after the click event
+                document.body.removeChild(link);
+            } catch (error) {
+                console.error('Error generating PDF:', error);
             }
-        };
+        }
+    };
+
+    const exportClientsUrl = ref('/export-clients');
+
+    // const showToast = useToast()
+
+    // const showSuccessToast = () => {
+    // showToast.success('Success message!')
+    // }
+
 </script>
 
 <template>
@@ -344,7 +355,7 @@
        
  
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg bg-purple-100 mt-5">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg bg-purple-100 mt-2">
             <div class="p-4 bg-purple-300 dark:bg-gray-900">
                 <div class="flex items-center justify-end text-white">
                     <!-- Date Range Picker -->
@@ -415,11 +426,17 @@
                                     <option value="others">Others</option>
                                 </select>
                             </div>
-                            <div class="flex flex-col mt-4 ml-3">
+                            <div class="flex items-center gap-1 mt-4 mb-2 ml-3">
 
                                 <button type="submit"
                                     class="bg-purple-600 px-3 py-2 text-white border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">Filter
                                 </button>
+
+                                <div>
+                                    <a :href="exportClientsUrl"
+                                        class="bg-green-600 px-3 py-2 rounded-md ">export
+                                    </a>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -526,7 +543,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <a href="#" @click.prevent="deleteClient(data.id, index)"
+                                        <a href="#" @click.prevent="deleteClient(data.id, index)"  
                                             class=" items-center justify-center text-red text-lg rounded-lg p-1 hover:bg-red-200"><i
                                                 class="fas fa-trash-alt"></i>
                                         </a>
