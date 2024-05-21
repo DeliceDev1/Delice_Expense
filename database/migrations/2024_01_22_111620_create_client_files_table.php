@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('client_detail_id'); // Foreign key to link to ClientDetail
             $table->string('name');
-            $table->bigInteger('passport');
+            $table->string('passport');
             $table->string('nationality');
             $table->string('appliedCountry');
             $table->timestamps();

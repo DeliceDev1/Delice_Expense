@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <base href="/public">
     @include('admin.css')
     @vite('resources/css/app.css')
 </head>
@@ -28,7 +29,8 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="mb-2">
-                        <counter />
+                        {{-- <counter /> --}}
+                        <counter :branch-id="{{ $branch_id }}" />
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>

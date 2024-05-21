@@ -18,6 +18,7 @@ class ClientDetail extends Model
         'received',
         'agent',
         'currency',
+        'branch_id',
         'image_path',
     ];
 

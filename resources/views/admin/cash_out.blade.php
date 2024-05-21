@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <base href="/public">
     @include('admin.css')
     @vite('resources/css/app.css')
 </head>
@@ -28,71 +29,80 @@
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="mb-2">
-                        <div>
+                        <div
+                            class=" bg-gradient-to-l from-gray-200 via-fuchsia-200 to-stone-100 p-4 rounded-lg shadow-xl">
+
                             @if (Session::has('msg'))
-                                <div class="bg-green-200 border border-red-400 text-red-700 px-4 py-3 mb-2 rounded relative"
-                                    role="alert">
-                                    <strong class="font-bold">Hurrahhh!</strong>
-                                    <span class="block sm:inline">{{ Session::get('msg') }}</span>
-                                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer"
-                                        id="closeAlert">
-                                        <svg class="fill-current h-6 w-6 text-red-500" role="button"
-                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <title>Close</title>
-                                            <path
-                                                d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                                        </svg>
-                                    </span>
-                                </div>
+                                <!-- Include SweetAlert JS -->
+                                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+                                <!-- Display SweetAlert -->
+                                <script>
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success!',
+                                        text: '{{ Session::get('msg') }}',
+                                    });
+                                </script>
                             @endif
-                            <form action="{{ route('form_out') }}" method="POST" enctype="multipart/form-data">
+
+
+
+                            <form action="{{ route('form_out', $branch_id) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div>
-                                    <p class="bg-purple-700 text-center px-4 py-2 text-2xl rounded-lg text-white mb-3">
+                                    <p class="bg-red-950 text-center text-white py-2.5 rounded m-3">
                                         CASH-OUT-DETAILS
+
                                     </p>
-                                    <div class="grid grid-cols-2 gap-2">
+
+                                    <div class="grid grid-cols-2 gap-2 p-3">
                                         <div>
                                             <label for="">Category</label>
                                             <select name="category" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
-                                                {{-- <option value="">--select an option--</option>
-                                                <option value="category-1">category-1</option>
-                                                <option value="category-2">category-2</option>
-                                                <option value="category-3">category-3</option>
-                                                <option value="category-4">category-4</option>
-                                                <option value="category-3">category-5</option>
-                                                <option value="category-6">category-6</option> 
-                                              --}}
 
+                                                <option value="">--select a category--</option>
                                                 @foreach ($categories as $category)
                                                     <option value="{{ $category }}">{{ $category }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
+                                        {{-- <div>
+                                            <label for="">Branch</Select></label>
+                                            <select id="branch" name="branch"
+                                                class="w-full border border-gray-300 rounded-xl">
+                                                <option value="">--choose a branch--</option>
+                                                <option value="dhaka">Dhaka</option>
+                                                <option value="delhi">Delhi</option>
+                                                <option value="lucknow">Lucknow</option>
+                                                <option value="nepal">Neapl</option>
+                                            </select>
+                                        </div> --}}
 
                                         <div>
-                                            <label for="">Date</label>
+                                            <label for="date">Date</label>
                                             <input type="date" name="date" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
-                                            <label for="">Amount</label>
+                                            <label for="amount">Amount</label>
                                             <input type="number" name="amount" id=""
                                                 placeholder="Enter the amount"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
-                                            <label for="">Purpose</label>
+                                            <label for="purpose">Purpose</label>
                                             <input type="text" name="purpose" id=""
                                                 placeholder="Enter the purpose of cost"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
-                                            <label for="">Payment Mode</label>
+                                            <label for="payment_mode">Payment Mode</label>
                                             <select name="payment_mode" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
                                                 <option value="">--select an option--</option>
@@ -104,45 +114,48 @@
                                         </div>
 
                                         <div>
-                                            <label for="">Payment By Name</label>
+                                            <label for="pbn">Payment By Name</label>
                                             <input type="text" name="pbn" id=""
                                                 placeholder="Enter the name"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
-                                            <label for="">Payment By Number</label>
+                                            <label for="pbm">Payment By Number</label>
                                             <input type="number" name="pbm" id=""
                                                 placeholder="Enter the number"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
-                                            <label for="">Tax</label>
+                                            <label for="tax">Tax</label>
                                             <input type="number" name="tax" id=""
                                                 placeholder="Enter tax amount"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
-                                            <label for="">Agent</label>
+                                            <label for="agent">Agent</label>
                                             <input type="text" name="agent" id=""
                                                 placeholder="Enter the agent name"
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
                                         <div>
-                                            <label for="">Images</label>
+                                            <label for="agent">Images</label>
                                             <input type="file" name="image_path" id=""
-                                                class="w-full border border-gray-300 rounded-lg p-1 bg-white">
+                                                class="w-full border border-gray-300 rounded-xl p-1 bg-white">
                                         </div>
+
+
 
 
                                     </div>
                                     <hr class="mt-3">
                                     <div class="mt-3">
                                         <button type="submit"
-                                            class="bg-purple-600 hover:bg-blue-400 px-4 py-1 text-white rounded block">Save</button>
+                                            class="bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 py-2 px-4 text-white rounded-xl ml-3">
+                                            Save</button>
                                     </div>
                                 </div>
                             </form>

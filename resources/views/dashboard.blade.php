@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <base href="/public">
     @include('admin.css')
     @vite('resources/css/app.css')
 </head>
@@ -54,7 +55,7 @@
     <!-- jQuery -->
     @include('admin.js')
 
-    
+
 </body>
 
 </html>

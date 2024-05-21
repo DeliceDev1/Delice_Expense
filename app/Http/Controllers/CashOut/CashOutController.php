@@ -9,13 +9,18 @@ use App\Models\CashOutDetail;
 use Illuminate\Http\Request;
 use Session;
 use File;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class CashOutController extends Controller
 {
-    public function store_cash_out_data(Request $request)
+
+    public function store_cash_out_data(Request $request, $branch_id)
     {
+        $id = $branch_id;
         $request->validate([
             'category' => 'required',
+            // 'branch_id' => 'required',
             'date' => 'required|date',
             'amount' => 'required|numeric',
             'purpose' => 'nullable|string',
@@ -28,11 +33,6 @@ class CashOutController extends Controller
         ]);
 
         $imageName = "";
-        // if ($image_path = $request->file('image_path')) {
-        //     $imageName = time() . '-' . uniqid() . '.' . $image_path->getClientOriginalExtension();
-        //     $image_path->move('images/', $imageName);
-        // } 
-
         if ($image_path = $request->file('image_path')) {
             $imageName = time() . '-' . uniqid() . '.' . $image_path->getClientOriginalExtension();
             $image_path->move(public_path('images/'), $imageName);
@@ -50,6 +50,7 @@ class CashOutController extends Controller
             'pbm' => $request->pbm,
             'tax' => $request->tax,
             'agent' => $request->agent,
+            'branch_id' => $id,
             'image_path' => $imageName,
         ]);
 
@@ -60,23 +61,25 @@ class CashOutController extends Controller
 
     }
 
-    public function dispaly_cash_out()
+    public function dispaly_cash_out($branch_id)
     {
-        $data = CashOutDetail::all();
+        $data = CashOutDetail::where('branch_id', $branch_id)->get();
 
         return view('admin.cash_out_details', compact('data'));
     }
 
-    public function edit_cash_out($id)
+
+    public function edit_cash_out($id, $branch_id)
     {
-        $edit_data = CashOutDetail::findOrFail($id);
+        $edit_data = CashOutDetail::where('branch_id', $branch_id)->findOrFail($id);
 
 
         return view('admin.edit_cash_out', compact('edit_data'));
     }
 
-    public function update_cash_out($id, Request $request)
+    public function update_cash_out($id, $branch_id, Request $request)
     {
+        // dd($request->all());
 
         $update_data = CashOutDetail::findOrFail($id);
 
@@ -93,25 +96,14 @@ class CashOutController extends Controller
             'image_path' => 'nullable|mimes:jpeg,png,jpg,gif,pdf|max:10240',
         ]);
 
-        // $imageName = "";
-
-        // $deleteOldImage = 'images/' . $update_data->image_path;
-
-        // if ($image_path = $request->file('image_path')) {
-        //     if (File::exists($deleteOldImage)) {
-        //         File::delete($deleteOldImage);
-        //     }
-        //     $imageName = time() . '-' . uniqid() . '.' . $image_path->getClientOriginalExtension();
-        //     $image_path->move(public_path('images/'), $imageName);
-        // } else {
-        //     $imageName = $update_data->image_path;
-        // }
 
         $imageName = "";
 
-        $deleteOldImage = 'images/' . $update_data->image_path;
+        $deleteOldImage = $update_data->image_path;
 
         if ($image_path = $request->file('image_path')) {
+
+
             // If a new image is provided in the request
             if (File::exists($deleteOldImage)) {
                 // Delete the old image if it exists
@@ -129,6 +121,8 @@ class CashOutController extends Controller
         }
 
 
+
+
         CashOutDetail::where('id', $id)->update([
             'category' => $request->category,
             'date' => $request->date,
@@ -139,6 +133,7 @@ class CashOutController extends Controller
             'pbm' => $request->pbm,
             'tax' => $request->tax,
             'agent' => $request->agent,
+            'branch_id' => $branch_id,
             'image_path' => $imageName,
         ]);
 
@@ -149,9 +144,10 @@ class CashOutController extends Controller
         // return redirect()->route('display_out');
     }
 
-    public function delete_cash_out($id)
+    public function delete_cash_out($id, $branch_id)
     {
-        $delete_cash_out_data = CashOutDetail::find($id);
+        // $delete_cash_out_data = CashOutDetail::find($id);
+        $delete_cash_out_data = CashOutDetail::where('branch_id', $branch_id)->find($id);
 
         $deleteOldImage = 'images/' . $delete_cash_out_data->image_path;
         if (file_exists($deleteOldImage)) {
@@ -160,11 +156,12 @@ class CashOutController extends Controller
 
         $delete_cash_out_data->delete();
         Session::flash('msg', 'Data Deleted successfuly');
-        return redirect()->route('display_out');
+        // return redirect()->route('display_out');
+        return redirect()->back();
 
     }
 
-    public function filter(Request $request)
+    public function filter(Request $request, $branch_id)
     {
         //first catching the values from input field.
         $startDate = $request->input('start_date');
@@ -176,9 +173,10 @@ class CashOutController extends Controller
         $agent = $request->input('agent');
 
         // Query to filter data based on inputs
-        $data = CashOutDetail::when($startDate, function ($query) use ($startDate) {
-            $query->where('date', '>=', $startDate);
-        })
+        $data = CashOutDetail::where('branch_id', $branch_id)
+            ->when($startDate, function ($query) use ($startDate) {
+                $query->where('date', '>=', $startDate);
+            })
             ->when($endDate, function ($query) use ($endDate) {
                 $query->where('date', '<=', $endDate);
             })
@@ -225,8 +223,6 @@ class CashOutController extends Controller
 
         $newCategory = $request->input('newCategory');
 
-
-
         $request->validate([
             'newCategory' => 'required|string|max:255|unique:cash_out_details,category',
         ]);
@@ -244,9 +240,9 @@ class CashOutController extends Controller
 
 
 
-    public function export()
+    public function export($branch_id)
     {
-        return Excel::download(new CashOutDetailExport, 'cash_out_details.xlsx');
+        return Excel::download(new CashOutDetailExport($branch_id), 'cash_out_details.xlsx');
     }
 
 }

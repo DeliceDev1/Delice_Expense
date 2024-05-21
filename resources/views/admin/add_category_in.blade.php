@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <base href="/public">
     @include('admin.css')
     @vite('resources/css/app.css')
 </head>
@@ -31,12 +32,20 @@
                         <div class="col-md-4 mx-auto">
                             <h4 class="text-center mb-2">ADD CASH-IN CATEGORY </h4>
                             <div>
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
+                                @if (Session::has('msg'))
+                                    <!-- Include SweetAlert JS -->
+                                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+                                    <!-- Display SweetAlert -->
+                                    <script>
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success!',
+                                            text: '{{ Session::get('msg') }}',
+                                        });
+                                    </script>
                                 @endif
-                                <form action="{{ route('add_cash_in_category') }}" method="post">
+                                <form action="{{ route('add_cash_in_category', $branch_id) }}" method="post">
                                     @csrf
                                     <input type="text" name="newCategoryIn" id=""
                                         class="bg-gray-300 rounded-md w-full mb-2">

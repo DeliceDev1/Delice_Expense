@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <base href="/public">
     @include('admin.css')
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -31,7 +32,7 @@
                 <div class="container-fluid">
                     <div class="mb-2">
 
-                        <edit />
+                        <edit :branch-id="{{ $branch_id }}" />
 
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->

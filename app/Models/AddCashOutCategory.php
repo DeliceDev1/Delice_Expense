@@ -9,5 +9,5 @@ class AddCashOutCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['category'];
+    protected $fillable = ['category', 'branch_id'];
 }

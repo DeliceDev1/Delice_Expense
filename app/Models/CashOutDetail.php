@@ -11,6 +11,7 @@ class CashOutDetail extends Model
 
     protected $fillable = [
         'category',
+        'branch_id',
         'date',
         'amount',
         'purpose',
@@ -26,4 +27,9 @@ class CashOutDetail extends Model
     {
         return asset('images/' . $value);
     }
+
+    // public function branch()
+    // {
+    //     return $this->belongsTo(Branch::class);
+    // }
 }

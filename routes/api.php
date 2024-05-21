@@ -5,6 +5,8 @@ use App\Http\Controllers\PDFController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\ClientController;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,16 +24,17 @@ use App\Http\Controllers\Client\ClientController;
 //     return $request->user();
 // });
 
-Route::post('/store-client-data', [ClientController::class, 'store']);
+Route::post('/store-client-data/{branch_id}', [ClientController::class, 'store']);
 
-Route::get('/get-client-data', [ClientController::class, 'getClient']);
+Route::get('/get-client-data/{branch_id}', [ClientController::class, 'getClient']);
+// Route::middleware('auth')->get('/get-client-data', [ClientController::class, 'getClient']);
 
-Route::post('/update-client-data', [ClientController::class, 'updateClient']);
+Route::post('/update-client-data/{branch_id}', [ClientController::class, 'updateClient']);
 
 Route::delete('/delete-client/{id}', [ClientController::class, 'deleteClient']);
 
-Route::post('/search-data', [ClientController::class, 'searchData']);
+Route::post('/search-data/{branch_id}', [ClientController::class, 'searchData']);
 
-Route::get('/get-category-data', [CategoryController::class, 'getCategories']);
+Route::get('/get-category-data/{branch_id}', [CategoryController::class, 'getCategories']);
 
 Route::post('/get-pdf/{id}', [PDFController::class, 'getPdf']);

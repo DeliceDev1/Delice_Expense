@@ -32,7 +32,7 @@ class PDFController extends Controller
 
         $pdf = PDF::loadView('myPDF', $data);
 
-        return $pdf->download('itsolutionstuff.pdf');
+        return $pdf->download('cashOutInvoice.pdf');
     }
 
     public function getPdf($id)

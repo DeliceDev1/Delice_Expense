@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <base href="/public">
     @include('admin.css')
     @vite('resources/css/app.css')
 </head>
@@ -29,18 +30,27 @@
                 <div class="container-fluid">
                     <div class="mb-2">
                         <div class="col-md-4 mx-auto">
-                            <h4 class="text-center mb-2">ADD CASH-OUT CATEGORY </h4>
+                            <h4 class="text-center mb-2">EDIT CASH-OUT CATEGORY </h4>
                             <div>
-                                @if (session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
+                                @if (Session::has('msg'))
+                                    <!-- Include SweetAlert JS -->
+                                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-                                <form action="{{ route('show_added_category') }}" method="POST">
+                                    <!-- Display SweetAlert -->
+                                    <script>
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success!',
+                                            text: '{{ Session::get('msg') }}',
+                                        });
+                                    </script>
+                                @endif
+                                <form
+                                    action="{{ route('update.cashout.category', ['id' => $data->id, 'branch_id' => $branch_id]) }}"
+                                    method="POST">
                                     @csrf
                                     <input type="text" name="newCategory" id=""
-                                        class="bg-gray-300 rounded-md w-full mb-2">
+                                        value="{{ $data->category }}" class="bg-gray-300 rounded-md w-full mb-2">
                                     <button type="submit" class="bg-red-600 rounded-md text-white px-4 py-2">add
                                         cash-out category</button>
                                 </form>

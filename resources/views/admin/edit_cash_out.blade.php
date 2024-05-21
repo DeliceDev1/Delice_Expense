@@ -31,8 +31,8 @@
                 <div class="container-fluid">
                     <div class="mb-2">
 
-                        <div>
-                            @if (Session::has('msg'))
+                        <div class="bg">
+                            {{-- @if (Session::has('msg'))
                                 <div class="bg-green-200 border border-red-400 text-red-700 px-4 py-3 mb-2 rounded relative"
                                     role="alert">
                                     <strong class="font-bold">Hurrahhh!</strong>
@@ -46,13 +46,28 @@
                                         </svg>
                                     </span>
                                 </div>
+                            @endif --}}
+                            @if (Session::has('msg'))
+                                <!-- Include SweetAlert JS -->
+                                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+                                <!-- Display SweetAlert -->
+                                <script>
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success!',
+                                        text: '{{ Session::get('msg') }}',
+                                    });
+                                </script>
                             @endif
-                            <form action="{{ route('update_out', $edit_data->id) }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form
+                                action="{{ route('update_out', ['id' => $edit_data->id, 'branch_id' => $branch_id]) }}"
+                                method="POST" enctype="multipart/form-data">
                                 @csrf
-                                <div>
-                                    <p class="bg-purple-700 text-center px-4 py-2 text-2xl rounded-lg text-white mb-3">
-                                        EDit_CASH-OUT-DATA
+                                <div class="bg-gradient-to-r from-blue-200 to-cyan-200 p-4 rounded-lg shadow-lg">
+                                    <p
+                                        class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-center px-4 py-2 text-2xl rounded-lg text-white mb-3">
+                                        EDIT-CASH-OUT-DATA
                                     </p>
                                     <div class="grid grid-cols-2 gap-2">
                                         <div>
@@ -60,28 +75,16 @@
 
                                             <select name="category" id=""
                                                 class="w-full border border-gray-300 rounded-xl">
-                                                <option value="">--select an option--</option>
-                                                <option value="category-1"
-                                                    {{ $edit_data->category === 'category-1' ? 'selected' : '' }}>
-                                                    category-1</option>
-                                                <option value="category-2"
-                                                    {{ $edit_data->category === 'category-2' ? 'selected' : '' }}>
-                                                    category-2</option>
-                                                <option value="category-3"
-                                                    {{ $edit_data->category === 'category-3' ? 'selected' : '' }}>
-                                                    category-3</option>
-                                                <option value="category-4"
-                                                    {{ $edit_data->category === 'category-4' ? 'selected' : '' }}>
-                                                    category-4</option>
-                                                <option value="category-5"
-                                                    {{ $edit_data->category === 'category-5' ? 'selected' : '' }}>
-                                                    category-5</option>
-                                                <option value="category-6"
-                                                    {{ $edit_data->category === 'category-6' ? 'selected' : '' }}>
-                                                    category-6</option>
+
+                                                <option value="{{ $edit_data->category }}">{{ $edit_data->category }}
+                                                </option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category }}">{{ $category }}</option>
+                                                @endforeach
                                             </select>
 
                                         </div>
+
 
                                         <div>
                                             <label for="">Date</label>
@@ -154,22 +157,33 @@
                                                 class="w-full border border-gray-300 rounded-xl">
                                         </div>
 
-                                        <div>
+                                        {{-- <div>
                                             <label for="">Images</label>
                                             @php
                                                 $baseUrl = URL::to('/');
                                             @endphp
                                             <img class="w-40 h-25" src="{{ $edit_data->image_path }}" alt="image">
                                             <input type="file" name="image_path" id=""
+                                              
+                                                class="w-full border border-gray-300 rounded-lg p-1 bg-white">
+                                        </div> --}}
+
+                                        <div>
+                                            <label for="image_path">Images</label>
+                                            <img class="w-40 h-25" src="{{ $edit_data->image_path }}" alt="image">
+                                            <input type="file" name="image_path" id="image_path"
                                                 class="w-full border border-gray-300 rounded-lg p-1 bg-white">
                                         </div>
+
+
 
 
                                     </div>
                                     <hr class="mt-3">
                                     <div class="mt-3">
                                         <button type="submit"
-                                            class="bg-blue-600 px-4 py-1 text-white rounded block">Save</button>
+                                            class="bg-gradient-to-r from-green-400
+                                            to-blue-500 hover:from-pink-500 hover:to-yellow-500 px-4 py-2 rounded-xl">Save</button>
                                     </div>
                                 </div>
                             </form>

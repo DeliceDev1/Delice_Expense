@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -217,6 +217,166 @@
             </div>
         </div>
     </div>
+</body>
+
+</html> --}}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Delice Placement International</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        .container {
+            margin-top: 30px;
+            width: 960px;
+            height: 100vh;
+            background-color: burlywood;
+        }
+
+        .first-div {
+            overflow: auto;
+            padding: 30px;
+        }
+
+        .head-left {
+            float: left;
+
+
+        }
+
+        .head-right {
+            float: right;
+
+        }
+
+        .head-right p {
+            line-height: 1;
+            /* Adjust this value to reduce the line height */
+        }
+
+        .parent {
+            /* background: gray; */
+            height: 200px;
+            width: 300px;
+            position: relative;
+        }
+
+        .child {
+            /* background-color: orange; */
+            position: absolute;
+            top: 25%;
+            left: 70%;
+            border: none;
+            border-radius: 10px;
+            transform: translate(-50%, -50%);
+        }
+
+        .margin {
+            margin-top: 130px;
+        }
+
+        .margin p {
+            line-height: 1;
+        }
+
+        table {
+            width: 100%;
+
+            /* padding: 20px; */
+        }
+
+        table,
+        th,
+        td {
+            border: none;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="first-div">
+            <div class="head-left">
+                <h4 style="color:brown;">Delice Placement Private Limited</h4>
+                <address style="font-size: 11px">
+                    B-3/87, VIVEK KHAND GOMTI NAGAR, <br>
+                    Gomtinagar, Lucknow, <br>
+                    Lucknow- 226010, Uttar Pradesh, <br>
+                    India. <br>
+
+                </address>
+            </div>
+            <div class="head-right parent">
+                <img class="child" style="width: 300px; height: 170px; margin-top: 5px;" src="admin/image/main_logo.png"
+                    alt="logo">
+            </div>
+        </div>
+        <h4 style="padding-left: 30px; color:brown;">INVOICE</h4>
+        <div class="first-div" style="font-size: 11px">
+            <div class="head-left">
+                <p style="font-weight: bold;">INVOICE TO</p>
+                <address>
+                    <span style="font-weight: bold;"> {{ $clientDetail->cpn }}</span>.<br>
+                    Mobile:{{ $clientDetail->cpm }}
+                </address>
+            </div>
+
+        </div>
+        <div class="margin">
+            <p style="text-align: center; color:brown; font-weight: bold;">Amount Received</p>
+            <hr style="border: 2px solid;">
+        </div>
+
+        <div>
+
+            <table>
+                <thead style="background-color: rgb(175, 118, 118); padding: 10px; text-align:center;">
+                    <tr>
+                        <th>Sl</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Payment mode</th>
+                        <th>Name</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr class="center">
+                        <td>1</td>
+                        <td>{{ $clientDetail->category }}</td>
+                        <td>{{ $clientDetail->date }}</td>
+                        <td>{{ $clientDetail->received }}</td>
+                        <td>{{ $clientDetail->cpn }}</td>
+                        <td>{{ $clientDetail->amount }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+    </div>
+
+    <script>
+        // Wait for the document to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Trigger the back navigation after a delay (adjust the delay as needed)
+            setTimeout(function() {
+                window.history.back(); // Go back to the previous page
+            }, 3000); // Adjust the delay (in milliseconds) based on your needs
+        });
+    </script>
+
 </body>
 
 </html>
